@@ -323,8 +323,7 @@ def celebrity():
         'api_key': tmdb_api_key,
         'language': 'en-US',
         'page': 1
-    }
-    
+    }  
     try:
         response = requests.get(endpoint, params=params, timeout=10)
     except (requests.exceptions.HTTPError,
@@ -347,7 +346,6 @@ def celebrity():
                 person['biography'] = details_response.json().get('biography', 'No biography available.')
 
         return render_template('celebrity.html', people=sorted_people, user=current_user)
-    
     return render_template('celebrity.html', show_message=True, message='Error fetching people data')
 
 @app.route('/new_series', methods=["GET"])

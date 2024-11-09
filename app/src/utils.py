@@ -94,7 +94,6 @@ def create_movie_genres(movie_genre_df):
             genres = genres.split('|')  # otherwise split
 
         movie_to_genres[movie] = genres
-    
     return movie_to_genres
 
 def send_email_to_user(recipient_email, categorized_data):
