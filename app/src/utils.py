@@ -46,6 +46,7 @@ def create_colored_tags(genres):
     tags = []
     for genre in genres:
         color = genre_colors.get(genre, '#CCCCCC')  # Default color if not found
+        # pylint: disable=line-too-long
         tag = f'<span style="background-color: {color}; color: #FFFFFF; padding: 5px; border-radius: 5px;">{genre}</span>'
         tags.append(tag)
     return ' '.join(tags)

@@ -341,11 +341,14 @@ def celebrity():
         # Fetch additional details for each person
         for person in sorted_people:
             person_id = person['id']
+            # pylint: disable=line-too-long
             details_response = requests.get(f'https://api.themoviedb.org/3/person/{person_id}?api_key={tmdb_api_key}&language=en-US', timeout=20)
             if details_response.status_code == 200:
+                # pylint: disable=line-too-long
                 person['biography'] = details_response.json().get('biography', 'No biography available.')
 
         return render_template('celebrity.html', people=sorted_people, user=current_user)
+    # pylint: disable=line-too-long
     return render_template('celebrity.html', show_message=True, message='Error fetching people data')
 
 @app.route('/new_series', methods=["GET"])
