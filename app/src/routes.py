@@ -323,7 +323,7 @@ def celebrity():
         'api_key': tmdb_api_key,
         'language': 'en-US',
         'page': 1
-    }  
+    }
     try:
         response = requests.get(endpoint, params=params, timeout=10)
     except (requests.exceptions.HTTPError,
