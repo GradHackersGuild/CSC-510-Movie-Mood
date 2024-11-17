@@ -15,7 +15,12 @@ from flask_socketio import SocketIO
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://varun:7nv0cMCeEdSsLpvtcQGjJTDM6ymhsHL9@dpg-cssk118gph6c7396k3bg-a.oregon-postgres.render.com/prod_tq0i'
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    'postgresql://varun:7nv0cMCeEdSsLpvtcQGjJTDM6ymhsHL9@'
+    'dpg-cssk118gph6c7396k3bg-a.oregon-postgres.render.com/'
+    'prod_tq0i'
+)
+
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 socket = SocketIO(app)
