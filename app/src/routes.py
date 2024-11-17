@@ -60,7 +60,7 @@ def signup():
     # If user already exists
     #pylint: disable=broad-except
     except Exception as e:
-        print(f"Error is {e}")
+        print(f"Error is {e} --------------------------------------")
         message = f"Username {username} already exists!"
         return render_template('signup.html', message=message, show_message=True)
 
@@ -90,8 +90,9 @@ def login():
         return render_template("login.html")
     #pylint: disable=broad-except
     except Exception as e:
-        print(f"Error is {e}")
-        return render_template('login.html', message=e, show_message=True)
+        print(f"Error is {e} ---------------")
+        message = "Invalid Credentials! Try again!"
+        return render_template('login.html', message=message, show_message=True)
 
 @app.route('/logout')
 def logout():
