@@ -54,3 +54,4 @@ wsproto==1.2.0
 WTForms==3.1.1
 pyinstaller==6.11.0
 beautifulsoup4==4.12.3
+psycopg2
