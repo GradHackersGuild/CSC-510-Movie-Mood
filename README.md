@@ -11,7 +11,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)
 [![DOI](https://zenodo.org/badge/879064540.svg)](https://doi.org/10.5281/zenodo.14010536)
 [![Unittest](https://github.com/The-Powerpuff-Girls3/CSC-510-Movie-Mood/actions/workflows/unittest.yml/badge.svg?branch=master&event=push)](https://github.com/The-Powerpuff-Girls3/CSC-510-Movie-Mood/actions/workflows/unittest.yml)
-[![codecov](https://codecov.io/gh/The-Powerpuff-Girls3/CSC-510-Movie-Mood/graph/badge.svg?token=SZWTDA4REW)](https://codecov.io/gh/The-Powerpuff-Girls3/CSC-510-Movie-Mood)
+[![codecov](https://codecov.io/gh/GradHackersGuild/CSC-510-Movie-Mood//branch/varun_features/graph/badge.svg)](https://codecov.io/gh/GradHackersGuild/CSC-510-Movie-Mood)
 [![GitHub release](https://img.shields.io/github/release/The-Powerpuff-Girls3/CSC-510-Movie-Mood.svg)](https://GitHub.com/The-Powerpuff-Girls3/CSC-510-Movie-Mood/releases/)
 [![StyleCheck: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/pylint-dev/pylint)
 [![Syntax Checker: mypy](https://img.shields.io/badge/syntax-mypy-yellow)](http://mypy-lang.org/)

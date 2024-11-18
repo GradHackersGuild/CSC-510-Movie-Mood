@@ -24,7 +24,7 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(20), nullable=False)
     last_name = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(60), nullable=False)
+    password = db.Column(db.Text, nullable=False)
     reviews = db.relationship('Review', backref='user_author', lazy=True)
 
     def __repr__(self):
