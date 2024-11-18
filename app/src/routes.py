@@ -48,7 +48,7 @@ def signup():
             last_name = request.form['last_name']
             email = request.form['email']
             password = request.form['password']
-            hashed_password = bcrypt.generate_password_hash(password)
+            hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
             user = User(username=username, email=email, first_name=first_name,
                         last_name=last_name, password=hashed_password)
             db.session.add(user)
@@ -60,7 +60,7 @@ def signup():
     # If user already exists
     #pylint: disable=broad-except
     except Exception as e:
-        print(f"Error is {e} --------------------------------------")
+        print(f"Error is {e}")
         message = f"Username {username} already exists!"
         return render_template('signup.html', message=message, show_message=True)
 
@@ -83,14 +83,13 @@ def login():
                 login_user(user)
                 return redirect(url_for('search_page'))
             # Invalid Credentials
-            show_message = True
             message = "Invalid Credentials! Try again!"
-            return render_template("login.html", message=message, show_message=show_message)
+            return render_template("login.html", message=message, show_message=True)
         # When the login page is hit
         return render_template("login.html")
     #pylint: disable=broad-except
     except Exception as e:
-        print(f"Error is {e} ---------------")
+        print(f"Error is {e}")
         message = "Invalid Credentials! Try again!"
         return render_template('login.html', message=message, show_message=True)
 
