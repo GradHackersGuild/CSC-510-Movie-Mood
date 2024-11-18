@@ -1,6 +1,6 @@
 # pylint: disable=cyclic-import
 """
-Copyright (c) 2023 Abhinav Sinha, Chandana Ray, Sam Kwiatkowski-Martin, Tanmay Pardeshi
+Copyright (c) 2023 Makarand Pundlik, Varun Varatharajan, Michelle Varghese
 This code is licensed under MIT license (see LICENSE for details)
 
 @author: PopcornPicks
@@ -46,6 +46,7 @@ def create_colored_tags(genres):
     tags = []
     for genre in genres:
         color = genre_colors.get(genre, '#CCCCCC')  # Default color if not found
+        # pylint: disable=line-too-long
         tag = f'<span style="background-color: {color}; color: #FFFFFF; padding: 5px; border-radius: 5px;">{genre}</span>'
         tags.append(tag)
     return ' '.join(tags)
@@ -94,7 +95,6 @@ def create_movie_genres(movie_genre_df):
             genres = genres.split('|')  # otherwise split
 
         movie_to_genres[movie] = genres
-    
     return movie_to_genres
 
 def send_email_to_user(recipient_email, categorized_data):

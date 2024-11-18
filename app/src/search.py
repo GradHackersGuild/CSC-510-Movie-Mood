@@ -1,5 +1,5 @@
 """
-Copyright (c) 2023 Abhinav Sinha, Chandana Ray, Sam Kwiatkowski-Martin, Tanmay Pardeshi
+Copyright (c) 2023 Makarand Pundlik, Varun Varatharajan, Michelle Varghese
 This code is licensed under MIT license (see LICENSE for details)
 
 @author: PopcornPicks
