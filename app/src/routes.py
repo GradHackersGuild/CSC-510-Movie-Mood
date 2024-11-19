@@ -155,6 +155,7 @@ def search():
     """
     term = request.form["q"]
     finder = Search()
+    finder.get_movie_from_tmdb(term)
     filtered_dict = finder.results_top_ten(term)
     resp = jsonify(filtered_dict)
     resp.status_code = 200
