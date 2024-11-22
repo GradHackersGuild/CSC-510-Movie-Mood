@@ -107,9 +107,11 @@ def profile_page():
     """
         Profile Page
     """
+    yt_api_key = "AIzaSyDGpt_eIAeRhtwN6_RGLIWRZtFCxSEV9JM"
     reviews_objects = Review.query.filter_by(user_id=current_user.id).all()
     reviews = []
     for review in reviews_objects:
+        trailer_id = get_trailer_video_id(movie_object.title, yt_api_key)
         movie_object = Movie.query.filter_by(movieId=review.movieId).first()
         obj = {
             "title" : movie_object.title,
@@ -117,8 +119,10 @@ def profile_page():
             "overview" : movie_object.overview,
             "genres" : movie_object.genres,
             "imdb_id" : movie_object.imdb_id,
-            "review_text" : review.review_text
+            "review_text" : review.review_text,
+            "trailer_id" : trailer_id
         }
+        print(trailer_id)
         reviews.append(obj)
     return render_template("profile.html", user=current_user, reviews=reviews, search=False)
 
@@ -208,6 +212,21 @@ def fetch_poster_url(imdb_id):
         return f"https://image.tmdb.org/t/p/w500{poster_path}" if poster_path else None
     return None
 
+def get_trailer_video_id(movie_name, api_key):
+    url = "https://www.googleapis.com/youtube/v3/search"
+    params = {
+        "part": "snippet",
+        "q": f"{movie_name} trailer",
+        "type": "video",
+        "maxResults": 1,
+        "key": api_key,
+    }
+    response = requests.get(url, params=params)
+    results = response.json()
+    if "items" in results and len(results["items"]) > 0:
+        return results["items"][0]["id"]["videoId"]
+    return None
+
 @app.route("/postReview", methods=["POST"])
 @login_required
 def post_review():
@@ -252,16 +271,20 @@ def movie_page():
     """
         Get movies and their reviews
     """
+    yt_api_key = "AIzaSyDGpt_eIAeRhtwN6_RGLIWRZtFCxSEV9JM"
+    print(yt_api_key)
     movies_ojbects = Movie.query.all()
     movies = []
     for movie_object in movies_ojbects:
         reviews = []
+        trailer_id = get_trailer_video_id(movie_object.title, yt_api_key)
         obj1 = {
             "title" : movie_object.title,
             "runtime" : movie_object.runtime,
             "overview" : movie_object.overview,
             "genres" : movie_object.genres,
             "imdb_id" : movie_object.imdb_id,
+            "trailer_id" : trailer_id
         }
         reviews_objects = Review.query.filter_by(movieId = movie_object.movieId).all()
         for review_object in reviews_objects:
