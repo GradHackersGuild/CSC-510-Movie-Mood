@@ -213,6 +213,16 @@ def fetch_poster_url(imdb_id):
     return None
 
 def get_trailer_video_id(movie_name, api_key):
+    """
+    Fetch the YouTube video ID of the first trailer for a given movie.
+
+    Args:
+        movie_name (str): Movie name to search for.
+        api_key (str): YouTube Data API key.
+
+    Returns:
+        str: YouTube video ID of the first result, or `None` if no results.
+    """
     url = "https://www.googleapis.com/youtube/v3/search"
     params = {
         "part": "snippet",
@@ -221,7 +231,7 @@ def get_trailer_video_id(movie_name, api_key):
         "maxResults": 1,
         "key": api_key,
     }
-    response = requests.get(url, params=params)
+    response = requests.get(url, params=params, timeout=10)
     results = response.json()
     if "items" in results and len(results["items"]) > 0:
         return results["items"][0]["id"]["videoId"]
