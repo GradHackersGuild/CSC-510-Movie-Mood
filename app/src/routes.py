@@ -150,6 +150,7 @@ def predict():
             training_data.append(movie_with_rating)
     data = recommend_for_new_user(training_data)
     data = data.to_json(orient="records")
+    print(data,'================')
     return jsonify(data)
 
 @app.route("/search", methods=["POST"])
@@ -159,7 +160,7 @@ def search():
     """
     term = request.form["q"]
     finder = Search()
-    finder.get_movie_from_tmdb(term)
+    # finder.get_movie_from_tmdb(term)
     filtered_dict = finder.results_top_ten(term)
     resp = jsonify(filtered_dict)
     resp.status_code = 200
