@@ -36,7 +36,6 @@ $(document).ready(function () {
   };
 
   addTOWatchListClick = (movieId, i) => {
-    console.log("-----------------", movieId);
     const data = {
       movieId,
     };
@@ -51,17 +50,9 @@ $(document).ready(function () {
       data: JSON.stringify(data),
       success: (response) => {
         $(`#addToWatchList-${i}`).prop("disabled", true);
-        // $(`#reviewModal-${i}`).modal("toggle");
-        // $(`#review-${i}`).value = "";
-        // $("#saved-flash").attr("hidden", false);
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        // Parse error response
-        // const errorData = JSON.parse(jqXHR.responseText);
-        // const errorMessage = errorData.message;
         console.log(jqXHR, textStatus, errorThrown, "-----------------");
-        // Display error message
-        // alert(`Error: ${errorMessage}`);
       },
     });
   };

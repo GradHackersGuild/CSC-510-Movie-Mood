@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 from src import app, db, bcrypt, socket
 from src.search import Search
 from src.item_based import recommend_for_new_user
-from src.models import User, Movie, Review
+from src.models import User, Movie, Review, Watchlist
 
 load_dotenv()
 TMDB_API_KEY = os.getenv("TMDB_API_KEY")
@@ -150,6 +150,7 @@ def predict():
             training_data.append(movie_with_rating)
     data = recommend_for_new_user(training_data)
     data = data.to_json(orient="records")
+    
     return jsonify(data)
 
 @app.route("/search", methods=["POST"])
@@ -427,9 +428,26 @@ def add_to_watchlist():
     """
     try:
         data = json.loads(request.data)
-        user_object = User.query.filter_by(username=current_user.username).first()
-        user_id = user_object.id
-        print(user_object,data)
+        user_id = User.query.filter_by(username=current_user.username).first().id
+        next_watch = Watchlist(user_id=user_id,movieId=data['movieId'])
+        db.session.add(next_watch)
+        db.session.commit()
         return jsonify({"success": True})
-    except(Exception):
-        print(Exception)
+    except Exception as e:
+        print(e)
+        return jsonify({"success": False,"error":e})
+    
+@app.route("/my_watchlist",methods=["GET"])
+@login_required
+def my_watchlist():
+    """
+        method to add movies to watchlist
+    """
+    try:
+        user_id = User.query.filter_by(username=current_user.username).first().id
+        watchlist = Watchlist.query.filter_by(user_id=user_id).all()
+        print(watchlist,json.loads(watchlist))
+        return render_template('watchlist.html')
+    except Exception as e:
+        print('Error occurred ------------------------',e)
+        return render_template('watchlist.html')
