@@ -40,30 +40,30 @@ $(document).ready(function () {
     const data = {
       movieId,
     };
-    $(`#addToWatchList-${i}`).prop("disabled", true);
-    // $.ajax({
-    //   type: "POST",
-    //   url: "/add_to_watchlist",
-    //   dataType: "json",
-    //   contentType: "application/json;charset=UTF-8",
-    //   traditional: "true",
-    //   cache: false,
-    //   data: JSON.stringify(data),
-    //   success: (response) => {
 
-    //     // $(`#reviewModal-${i}`).modal("toggle");
-    //     // $(`#review-${i}`).value = "";
-    //     // $("#saved-flash").attr("hidden", false);
-    //   },
-    //   error: function (jqXHR, textStatus, errorThrown) {
-    //     // Parse error response
-    //     const errorData = JSON.parse(jqXHR.responseText);
-    //     const errorMessage = errorData.message;
-
-    //     // Display error message
-    //     alert(`Error: ${errorMessage}`);
-    //   },
-    // });
+    $.ajax({
+      type: "POST",
+      url: "/add_to_watchlist",
+      dataType: "json",
+      contentType: "application/json;charset=UTF-8",
+      traditional: "true",
+      cache: false,
+      data: JSON.stringify(data),
+      success: (response) => {
+        $(`#addToWatchList-${i}`).prop("disabled", true);
+        // $(`#reviewModal-${i}`).modal("toggle");
+        // $(`#review-${i}`).value = "";
+        // $("#saved-flash").attr("hidden", false);
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        // Parse error response
+        // const errorData = JSON.parse(jqXHR.responseText);
+        // const errorMessage = errorData.message;
+        console.log(jqXHR, textStatus, errorThrown, "-----------------");
+        // Display error message
+        // alert(`Error: ${errorMessage}`);
+      },
+    });
   };
 
   modalOnClose = (i) => {

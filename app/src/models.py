@@ -28,7 +28,7 @@ class User(db.Model, UserMixin):
     reviews = db.relationship('Review', backref='user_author', lazy=True)
 
     def __repr__(self):
-        return f" {self.first_name} {self.last_name}"
+        return f" {self.first_name} {self.last_name} {self.email} {self.id}"
 
 # pylint: disable=R0903
 class Movie(db.Model):
@@ -59,4 +59,15 @@ class Review(db.Model):
 
     def __repr__(self):
         return f"{self.user_id} - {self.movieId}"
-    
+
+class Watchlist(db.Model):
+    """
+        Watchlist Table
+    """
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    movieId = db.Column(db.Integer, db.ForeignKey('movie.movieId'), nullable=False)
+    watched = db.Column(db.Boolean, nullable=False, default=False)
+
+    def __repr__(self):
+        return f"{self.user_id} - {self.movieId} - ${self.watched}"

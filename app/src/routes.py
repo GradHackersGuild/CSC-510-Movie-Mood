@@ -150,7 +150,6 @@ def predict():
             training_data.append(movie_with_rating)
     data = recommend_for_new_user(training_data)
     data = data.to_json(orient="records")
-    print(data,'================')
     return jsonify(data)
 
 @app.route("/search", methods=["POST"])
@@ -419,3 +418,18 @@ def new_series():
         return render_template('new_series.html', series=series_data, user=current_user)
     return render_template('new_series.html', show_message=True,
                            message='Error fetching series data')
+
+@app.route("/add_to_watchlist",methods=["POST"])
+@login_required
+def add_to_watchlist():
+    """
+        method to add movies to watchlist
+    """
+    try:
+        data = json.loads(request.data)
+        user_object = User.query.filter_by(username=current_user.username).first()
+        user_id = user_object.id
+        print(user_object,data)
+        return jsonify({"success": True})
+    except(Exception):
+        print(Exception)

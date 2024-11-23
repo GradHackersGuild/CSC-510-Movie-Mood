@@ -79,6 +79,5 @@ class Search:
         url = f"https://api.themoviedb.org/3/search/movie?query={self.format_movie_name(query)}&page=1&api_key={TMDB_API_KEY}&language=en-US"
         response = requests.get(url, timeout=timeout)
         data = response.json()
-        print(data['results'],'---------------')
 #if __name__ == "__main__":
 #    app.run()
