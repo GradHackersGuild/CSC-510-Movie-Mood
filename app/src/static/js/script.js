@@ -77,6 +77,46 @@ $(document).ready(function () {
       return posterURL;
     };  
 
+    function fetchTrailerVideoID(movieTitle) {
+      let videoID = null;
+      $.ajax({
+        type: "GET",
+        url: "https://www.googleapis.com/youtube/v3/search",
+        data: {
+          part: "snippet",
+          q: `${movieTitle} trailer`,
+          type: "video",
+          maxResults: 1,
+          key: "AIzaSyDGpt_eIAeRhtwN6_RGLIWRZtFCxSEV9JM",
+        },
+        async: false,
+        success: function (response) {
+          if (response.items && response.items.length > 0) {
+            videoID = response.items[0].id.videoId;
+          }
+        },
+        error: function (error) {
+          console.log("Error fetching trailer video ID: " + error);
+        },
+      });
+      return videoID;
+    }
+
+    function embedTrailer(videoID, container) {
+      if (videoID) {
+        const iframeHTML = `
+          <iframe width="560" height="315"
+                  src="https://www.youtube.com/embed/${videoID}"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen>
+          </iframe>`;
+        $(container).html(iframeHTML);
+      } else {
+        $(container).html("<p>Trailer not found</p>");
+      }
+    }
+
     $.ajax({
       type: "POST",
       url: "/predict",
@@ -92,6 +132,8 @@ $(document).ready(function () {
         var modalParent = document.getElementById("modalParent");
         $("#recommended_block").append(title);
         for (var i = 0; i < data.length; i++) {
+          const movieTitle = data[i].title;
+          const videoID = fetchTrailerVideoID(movieTitle);
           var column = $('<div class="col-sm-12"></div>');
           var card = `<div class="card movie-card">
             <div class="row no-gutters">
@@ -100,6 +142,7 @@ $(document).ready(function () {
                   <h5 class="card-title">${data[i].title}</h5>
                   <h6 class="card-subtitle mb-2 text-muted">${data[i].runtime} minutes</h6>
                   <p class="card-text">${data[i].overview}</p>
+                  <div id="trailer-container-${i}" class="trailer-container"></div>
                   <a target="_blank" href="https://www.imdb.com/title/${data[i].imdb_id}" class="btn btn-primary">Check out IMDb Link</a>
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="modalButton-${i}" data-bs-target="#reviewModal-${i}">Write a review</button>
                   <div class="movieId" hidden>${data[i].movieId}</div>
@@ -138,6 +181,7 @@ $(document).ready(function () {
           modalParent.innerHTML += modal;
           column.append(card);
           list.append(column);
+          embedTrailer(videoID, `#trailer-container-${i}`);
         }
         $("#loader").attr("class", "d-none");
       },

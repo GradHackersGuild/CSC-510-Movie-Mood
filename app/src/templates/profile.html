@@ -57,6 +57,12 @@
                   <h6 class="card-subtitle mb-2 text-muted">{{review.runtime}} minutes</h6>
                   <p class="card-text"><strong>Movie Overview : </strong> {{review.overview}}</p>
                   <p class="card-text"><strong>Your Review : </strong>{{review.review_text}}</p>
+                  <iframe width="560" height="315" 
+                      src="https://www.youtube.com/embed/{{ trailer_id }}" 
+                      frameborder="0" 
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                      allowfullscreen>
+                    </iframe>
                   <a target="_blank" href="{{ imdb_link }}" class="btn btn-primary">Check out IMDb Link</a>
                 </div>                
               </div>
