@@ -418,10 +418,13 @@ def new_series():
         return render_template('new_series.html', series=series_data, user=current_user)
     return render_template('new_series.html', show_message=True,
                            message='Error fetching series data')
-    
-    @app.route('/get-youtube-api-key', methods=['GET'])
-    def get_api_key():
-        api_key = os.getenv("YOUTUBE_API_KEY")
-        if api_key:
-            return jsonify({"key": api_key}), 200
-        return jsonify({"error": "API key not found"}), 404
+
+@app.route('/get-youtube-api-key', methods=['GET'])
+def get_api_key():
+    """
+        Sending API key to client
+    """
+    api_key = os.getenv("YOUTUBE_API_KEY")
+    if api_key:
+        return jsonify({"key": api_key}), 200
+    return jsonify({"error": "API key not found"}), 404
