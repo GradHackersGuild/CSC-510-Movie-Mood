@@ -107,7 +107,7 @@ def profile_page():
     """
         Profile Page
     """
-    yt_api_key = "AIzaSyDGpt_eIAeRhtwN6_RGLIWRZtFCxSEV9JM"
+    yt_api_key = os.getenv("YOUTUBE_API_KEY")
     reviews_objects = Review.query.filter_by(user_id=current_user.id).all()
     reviews = []
     for review in reviews_objects:
@@ -281,13 +281,14 @@ def movie_page():
     """
         Get movies and their reviews
     """
-    yt_api_key = "AIzaSyDGpt_eIAeRhtwN6_RGLIWRZtFCxSEV9JM"
+    yt_api_key = os.getenv("YOUTUBE_API_KEY")
     print(yt_api_key)
     movies_ojbects = Movie.query.all()
     movies = []
     for movie_object in movies_ojbects:
         reviews = []
         trailer_id = get_trailer_video_id(movie_object.title, yt_api_key)
+        print(trailer_id)
         obj1 = {
             "title" : movie_object.title,
             "runtime" : movie_object.runtime,
@@ -417,3 +418,13 @@ def new_series():
         return render_template('new_series.html', series=series_data, user=current_user)
     return render_template('new_series.html', show_message=True,
                            message='Error fetching series data')
+
+@app.route('/get-youtube-api-key', methods=['GET'])
+def get_api_key():
+    """
+        Sending API key to client
+    """
+    api_key = os.getenv("YOUTUBE_API_KEY")
+    if api_key:
+        return jsonify({"key": api_key}), 200
+    return jsonify({"error": "API key not found"}), 404
