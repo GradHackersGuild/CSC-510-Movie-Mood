@@ -9,10 +9,13 @@
 {% endblock %} {% block maincontent %}
 <div class="container" style="margin-top: 60px" id="centralDivLanding">
   <div class="heading1">
-    <br /><br /><br /><br />
     <h2><center>🎬 My Watchlist🍿: Login to Your Account! 🎬</center></h2>
     <br />
-
+    <ul>
+      {% for movie in movies %}
+      <li>{{ movie.title }} ({{ movie.year }})</li>
+      {% endfor %}
+    </ul>
     {% endblock %}
   </div>
 </div>

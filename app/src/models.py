@@ -71,3 +71,11 @@ class Watchlist(db.Model):
 
     def __repr__(self):
         return f"{self.user_id} - {self.movieId} - ${self.watched}"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "movieId": self.movieId,
+            "watched":self.watched
+        }

@@ -52,7 +52,7 @@ $(document).ready(function () {
         $(`#addToWatchList-${i}`).prop("disabled", true);
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        console.log(jqXHR, textStatus, errorThrown, "-----------------");
+        console.log(jqXHR, textStatus, errorThrown);
       },
     });
   };

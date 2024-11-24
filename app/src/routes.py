@@ -446,8 +446,9 @@ def my_watchlist():
     try:
         user_id = User.query.filter_by(username=current_user.username).first().id
         watchlist = Watchlist.query.filter_by(user_id=user_id).all()
-        print(watchlist,json.loads(watchlist))
-        return render_template('watchlist.html')
+        watchlist_json = [item.to_dict() for item in watchlist]
+        #now fetch movie details, like poster and all
+        return render_template('watchlist.html',movies=watchlist_json)
     except Exception as e:
-        print('Error occurred ------------------------',e)
-        return render_template('watchlist.html')
+        print('Error occurred',e)
+        return render_template('watchlist.html',show_message=True,message=e)
