@@ -8,6 +8,7 @@ This code is licensed under MIT license (see LICENSE for details)
 import json
 import os
 import requests
+import csv
 
 from flask import render_template, url_for, redirect, request, jsonify
 from flask_login import login_user, current_user, logout_user, login_required
@@ -16,10 +17,13 @@ from dotenv import load_dotenv
 from src import app, db, bcrypt, socket
 from src.search import Search
 from src.item_based import recommend_for_new_user
-from src.models import User, Movie, Review
+from src.models import User, Movie, Review, Watchlist
 
 load_dotenv()
 TMDB_API_KEY = os.getenv("TMDB_API_KEY")
+app_dir = os.path.dirname(os.path.abspath(__file__))
+code_dir = os.path.dirname(app_dir)
+project_dir = os.path.dirname(code_dir)
 
 @app.route("/", methods={"GET"})
 @app.route("/home", methods={"GET"})
@@ -150,6 +154,7 @@ def predict():
             training_data.append(movie_with_rating)
     data = recommend_for_new_user(training_data)
     data = data.to_json(orient="records")
+    
     return jsonify(data)
 
 @app.route("/search", methods=["POST"])
@@ -159,6 +164,7 @@ def search():
     """
     term = request.form["q"]
     finder = Search()
+    # finder.get_movie_from_tmdb(term)
     filtered_dict = finder.results_top_ten(term)
     resp = jsonify(filtered_dict)
     resp.status_code = 200
@@ -419,6 +425,60 @@ def new_series():
     return render_template('new_series.html', show_message=True,
                            message='Error fetching series data')
 
+@app.route("/add_to_watchlist",methods=["POST"])
+@login_required
+def add_to_watchlist():
+    """
+        method to add movies to watchlist
+    """
+    try:
+        data = json.loads(request.data)
+        print(data,'----------------')
+        user_id = User.query.filter_by(username=current_user.username).first().id
+        poster_path = f"https://image.tmdb.org/t/p/w500{data['poster_path']}"
+        next_watch = Watchlist(user_id=user_id,movieId=data['movieId'],title=data['title'],overview=data['overview'],poster_path=poster_path,runtime=data['runtime'],imdb_id=data['imdb_id'])
+        db.session.add(next_watch)
+        db.session.commit()
+        return jsonify({"success": True})
+    except Exception as e:
+        print(e)
+        return jsonify({"success": False,"error":e})
+    
+
+@app.route("/my_watchlist",methods=["GET"])
+@login_required
+def my_watchlist():
+    """
+        method to get movies from watchlist
+    """
+    try:
+        user_id = User.query.filter_by(username=current_user.username).first().id
+        watchlist = Watchlist.query.filter_by(user_id=user_id).all()
+        watchlist_json = [item.to_dict() for item in watchlist]
+        #now fetch movie details, like poster and all
+        print('im here ---------------------')
+        return render_template('watchlist.html',movies=watchlist_json)
+    except Exception as e:
+        print('Error occurred',e)
+        return render_template('watchlist.html',show_message=True,message=e)
+    
+@app.route("/remove_from_watchlist",methods=["POST"])
+@login_required
+def remove_from_watchlist():
+    """
+        method to delete a movie from watchlist
+    """
+    try:
+        data = json.loads(request.data)
+        user_id = User.query.filter_by(username=current_user.username).first().id
+        watchlist_entry = Watchlist.query.filter_by(user_id=user_id, movieId=data['movieId']).first()
+        db.session.delete(watchlist_entry)
+        db.session.commit()
+        return my_watchlist()
+    except Exception as e:
+        print('Error occurred',e)
+        return render_template('watchlist.html',show_message=True,message=e)
+    
 @app.route('/get-youtube-api-key', methods=['GET'])
 def get_api_key():
     """
