@@ -79,28 +79,49 @@ $(document).ready(function () {
 
     function fetchTrailerVideoID(movieTitle) {
       let videoID = null;
+    
+      // Fetch API key from the server
       $.ajax({
         type: "GET",
-        url: "https://www.googleapis.com/youtube/v3/search",
-        data: {
-          part: "snippet",
-          q: `${movieTitle} trailer`,
-          type: "video",
-          maxResults: 1,
-          key: "AIzaSyDGpt_eIAeRhtwN6_RGLIWRZtFCxSEV9JM",
-        },
+        url: "/get-youtube-api-key", // Server endpoint to get API key
         async: false,
-        success: function (response) {
-          if (response.items && response.items.length > 0) {
-            videoID = response.items[0].id.videoId;
+        success: function (apiResponse) {
+          if (apiResponse.key) {
+            const apiKey = apiResponse.key;
+    
+            // Fetch trailer video ID using the retrieved API key
+            $.ajax({
+              type: "GET",
+              url: "https://www.googleapis.com/youtube/v3/search",
+              data: {
+                part: "snippet",
+                q: `${movieTitle} trailer`,
+                type: "video",
+                maxResults: 1,
+                key: apiKey,
+              },
+              async: false,
+              success: function (response) {
+                if (response.items && response.items.length > 0) {
+                  videoID = response.items[0].id.videoId;
+                }
+              },
+              error: function (error) {
+                console.log("Error fetching trailer video ID: " + error);
+              },
+            });
+          } else {
+            console.log("API key not found in the server response.");
           }
         },
         error: function (error) {
-          console.log("Error fetching trailer video ID: " + error);
+          console.log("Error fetching API key: " + error);
         },
       });
+    
       return videoID;
     }
+    
 
     function embedTrailer(videoID, container) {
       if (videoID) {
@@ -134,6 +155,7 @@ $(document).ready(function () {
         for (var i = 0; i < data.length; i++) {
           const movieTitle = data[i].title;
           const videoID = fetchTrailerVideoID(movieTitle);
+          console.log("Error fetching trailer video ID: " + movieTitle + videoID);
           var column = $('<div class="col-sm-12"></div>');
           var card = `<div class="card movie-card">
             <div class="row no-gutters">

@@ -1,5 +1,6 @@
 coverage
 .coveralls.yml
+test_yt_api.py
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
