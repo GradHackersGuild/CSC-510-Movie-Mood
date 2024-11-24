@@ -35,9 +35,22 @@ $(document).ready(function () {
     });
   };
 
-  addTOWatchListClick = (movieId, i) => {
+  addTOWatchListClick = (
+    movieId,
+    title,
+    overview,
+    poster_path,
+    imdb_id,
+    runtime,
+    i
+  ) => {
     const data = {
       movieId,
+      title,
+      overview,
+      poster_path,
+      imdb_id,
+      runtime,
     };
 
     $.ajax({
@@ -52,7 +65,7 @@ $(document).ready(function () {
         $(`#addToWatchList-${i}`).prop("disabled", true);
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        console.log(jqXHR, textStatus, errorThrown);
+        console.log(jqXHR, textStatus, errorThrown, "-----------------");
       },
     });
   };

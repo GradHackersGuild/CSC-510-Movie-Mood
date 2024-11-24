@@ -68,6 +68,11 @@ class Watchlist(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     movieId = db.Column(db.Integer, nullable=False)
     watched = db.Column(db.Boolean, nullable=False, default=False)
+    title = db.Column(db.String(200), nullable=False)
+    runtime = db.Column(db.Integer, nullable=True)
+    overview = db.Column(db.Text, nullable=True)
+    imdb_id = db.Column(db.String(20), nullable=False)
+    poster_path = db.Column(db.String(200), nullable=True)
 
     def __repr__(self):
         return f"{self.user_id} - {self.movieId} - ${self.watched}"
@@ -77,5 +82,10 @@ class Watchlist(db.Model):
             "id": self.id,
             "user_id": self.user_id,
             "movieId": self.movieId,
-            "watched":self.watched
+            "watched":self.watched,
+            "title":self.title,
+            "runtime":self.runtime,
+            "overview":self.overview,
+            "imdb_id":self.imdb_id,
+            "poster_path":self.poster_path
         }

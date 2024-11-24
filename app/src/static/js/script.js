@@ -151,7 +151,11 @@ $(document).ready(function () {
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="modalButton-${i}" data-bs-target="#reviewModal-${i}">Write a review</button>
                   <button type="button" onclick="addTOWatchListClick('${
                     data[i].movieId
-                  }', '${i}')" id="addToWatchList-${i}" class="btn btn-primary modal-save">Add To Watchlist</button>
+                  }','${data[i].title}','${data[i].overview}','${
+            data[i].poster_path
+          }','${data[i].imdb_id}','${
+            data[i].runtime
+          }', '${i}')" id="addToWatchList-${i}" class="btn btn-primary modal-save">Add To Watchlist</button>
                   <div class="movieId" hidden>${data[i].movieId}</div>
                   <div class="genres" hidden>${data[i].genres}</div>
                   <div class="imdb_id" hidden>${data[i].imdb_id}</div>
