@@ -6,9 +6,7 @@ This code is licensed under MIT license (see LICENSE for details)
 """
 import os
 import pandas as pd
-import requests
 #from flask import jsonify, request, render_template
-
 
 app_dir = os.path.dirname(os.path.abspath(__file__))
 code_dir = os.path.dirname(app_dir)
@@ -19,7 +17,6 @@ class Search:
     """
     Search feature for landing page
     """
-
     df = pd.read_csv(project_dir + "/data/movies.csv")
 
     def __init__(self):
@@ -75,13 +72,5 @@ class Search:
         """
         return movie.replace(" ", "%20")
 
-    def get_movie_from_tmdb(self,query):
-        """
-        function to get movie from imdb
-        """
-        TMDB_API_KEY = os.getenv("TMDB_API_KEY")
-        timeout = 100
-        movie = self.format_movie_name(query)
-        url = f"https://api.themoviedb.org/3/search/movie?query={self.format_movie_name(query)}&page=1&api_key={TMDB_API_KEY}&language=en-US"
-        response = requests.get(url, timeout=timeout)
-        data = response.json()
+#if __name__ == "__main__":
+#    app.run()

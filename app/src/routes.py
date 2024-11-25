@@ -8,7 +8,6 @@ This code is licensed under MIT license (see LICENSE for details)
 import json
 import os
 import requests
-import csv
 
 from flask import render_template, url_for, redirect, request, jsonify
 from flask_login import login_user, current_user, logout_user, login_required
@@ -154,7 +153,6 @@ def predict():
             training_data.append(movie_with_rating)
     data = recommend_for_new_user(training_data)
     data = data.to_json(orient="records")
-    
     return jsonify(data)
 
 @app.route("/search", methods=["POST"])
@@ -433,17 +431,17 @@ def add_to_watchlist():
     """
     try:
         data = json.loads(request.data)
-        print(data,'----------------')
         user_id = User.query.filter_by(username=current_user.username).first().id
         poster_path = f"https://image.tmdb.org/t/p/w500{data['poster_path']}"
+        # pylint: disable=line-too-long
         next_watch = Watchlist(user_id=user_id,movieId=data['movieId'],title=data['title'],overview=data['overview'],poster_path=poster_path,runtime=data['runtime'],imdb_id=data['imdb_id'])
         db.session.add(next_watch)
         db.session.commit()
         return jsonify({"success": True})
+    # pylint: disable=broad-except
     except Exception as e:
         print(e)
         return jsonify({"success": False,"error":e})
-    
 
 @app.route("/my_watchlist",methods=["GET"])
 @login_required
@@ -456,12 +454,12 @@ def my_watchlist():
         watchlist = Watchlist.query.filter_by(user_id=user_id).all()
         watchlist_json = [item.to_dict() for item in watchlist]
         #now fetch movie details, like poster and all
-        print('im here ---------------------')
         return render_template('watchlist.html',movies=watchlist_json)
+    # pylint: disable=broad-except
     except Exception as e:
         print('Error occurred',e)
         return render_template('watchlist.html',show_message=True,message=e)
-    
+
 @app.route("/remove_from_watchlist",methods=["POST"])
 @login_required
 def remove_from_watchlist():
@@ -471,14 +469,16 @@ def remove_from_watchlist():
     try:
         data = json.loads(request.data)
         user_id = User.query.filter_by(username=current_user.username).first().id
+        # pylint: disable=line-too-long
         watchlist_entry = Watchlist.query.filter_by(user_id=user_id, movieId=data['movieId']).first()
         db.session.delete(watchlist_entry)
         db.session.commit()
         return my_watchlist()
+    # pylint: disable=broad-except
     except Exception as e:
         print('Error occurred',e)
         return render_template('watchlist.html',show_message=True,message=e)
-    
+
 @app.route('/get-youtube-api-key', methods=['GET'])
 def get_api_key():
     """

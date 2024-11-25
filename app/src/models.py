@@ -78,6 +78,9 @@ class Watchlist(db.Model):
         return f"{self.user_id} - {self.movieId} - ${self.watched}"
 
     def to_dict(self):
+        """
+            method to JSONify the python class
+        """
         return {
             "id": self.id,
             "user_id": self.user_id,
