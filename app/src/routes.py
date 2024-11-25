@@ -8,7 +8,6 @@ This code is licensed under MIT license (see LICENSE for details)
 import json
 import os
 import requests
-import csv
 
 from flask import render_template, url_for, redirect, request, jsonify
 from flask_login import login_user, current_user, logout_user, login_required
@@ -154,7 +153,6 @@ def predict():
             training_data.append(movie_with_rating)
     data = recommend_for_new_user(training_data)
     data = data.to_json(orient="records")
-    
     return jsonify(data)
 
 @app.route("/search", methods=["POST"])
@@ -444,7 +442,6 @@ def add_to_watchlist():
         print(e)
         return jsonify({"success": False,"error":e})
     
-
 @app.route("/my_watchlist",methods=["GET"])
 @login_required
 def my_watchlist():
