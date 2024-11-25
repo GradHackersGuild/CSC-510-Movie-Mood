@@ -434,6 +434,7 @@ def add_to_watchlist():
         print(data,'----------------')
         user_id = User.query.filter_by(username=current_user.username).first().id
         poster_path = f"https://image.tmdb.org/t/p/w500{data['poster_path']}"
+        # pylint: disable=line-too-long
         next_watch = Watchlist(user_id=user_id,movieId=data['movieId'],title=data['title'],overview=data['overview'],poster_path=poster_path,runtime=data['runtime'],imdb_id=data['imdb_id'])
         db.session.add(next_watch)
         db.session.commit()
@@ -441,7 +442,7 @@ def add_to_watchlist():
     except Exception as e:
         print(e)
         return jsonify({"success": False,"error":e})
-    
+
 @app.route("/my_watchlist",methods=["GET"])
 @login_required
 def my_watchlist():
@@ -458,7 +459,7 @@ def my_watchlist():
     except Exception as e:
         print('Error occurred',e)
         return render_template('watchlist.html',show_message=True,message=e)
-    
+
 @app.route("/remove_from_watchlist",methods=["POST"])
 @login_required
 def remove_from_watchlist():
