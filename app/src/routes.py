@@ -16,10 +16,13 @@ from dotenv import load_dotenv
 from src import app, db, bcrypt, socket
 from src.search import Search
 from src.item_based import recommend_for_new_user
-from src.models import User, Movie, Review
+from src.models import User, Movie, Review, Watchlist
 
 load_dotenv()
 TMDB_API_KEY = os.getenv("TMDB_API_KEY")
+app_dir = os.path.dirname(os.path.abspath(__file__))
+code_dir = os.path.dirname(app_dir)
+project_dir = os.path.dirname(code_dir)
 
 
 @app.route("/", methods={"GET"})
@@ -113,7 +116,7 @@ def profile_page():
     """
         Profile Page
     """
-    yt_api_key = "AIzaSyDGpt_eIAeRhtwN6_RGLIWRZtFCxSEV9JM"
+    yt_api_key = os.getenv("YOUTUBE_API_KEY")
     reviews_objects = Review.query.filter_by(user_id=current_user.id).all()
     reviews = []
     for review in reviews_objects:
@@ -168,6 +171,7 @@ def search():
     """
     term = request.form["q"]
     finder = Search()
+    # finder.get_movie_from_tmdb(term)
     filtered_dict = finder.results_top_ten(term)
     resp = jsonify(filtered_dict)
     resp.status_code = 200
@@ -300,13 +304,14 @@ def movie_page():
     """
         Get movies and their reviews
     """
-    yt_api_key = "AIzaSyDGpt_eIAeRhtwN6_RGLIWRZtFCxSEV9JM"
+    yt_api_key = os.getenv("YOUTUBE_API_KEY")
     print(yt_api_key)
     movies_ojbects = Movie.query.all()
     movies = []
     for movie_object in movies_ojbects:
         reviews = []
         trailer_id = get_trailer_video_id(movie_object.title, yt_api_key)
+        print(trailer_id)
         obj1 = {
             "title": movie_object.title,
             "runtime": movie_object.runtime,
@@ -443,3 +448,69 @@ def new_series():
         return render_template('new_series.html', series=series_data, user=current_user)
     return render_template('new_series.html', show_message=True,
                            message='Error fetching series data')
+
+@app.route("/add_to_watchlist",methods=["POST"])
+@login_required
+def add_to_watchlist():
+    """
+        method to add movies to watchlist
+    """
+    try:
+        data = json.loads(request.data)
+        user_id = User.query.filter_by(username=current_user.username).first().id
+        poster_path = f"https://image.tmdb.org/t/p/w500{data['poster_path']}"
+        # pylint: disable=line-too-long
+        next_watch = Watchlist(user_id=user_id,movieId=data['movieId'],title=data['title'],overview=data['overview'],poster_path=poster_path,runtime=data['runtime'],imdb_id=data['imdb_id'])
+        db.session.add(next_watch)
+        db.session.commit()
+        return jsonify({"success": True})
+    # pylint: disable=broad-except
+    except Exception as e:
+        print(e)
+        return jsonify({"success": False,"error":e})
+
+@app.route("/my_watchlist",methods=["GET"])
+@login_required
+def my_watchlist():
+    """
+        method to get movies from watchlist
+    """
+    try:
+        user_id = User.query.filter_by(username=current_user.username).first().id
+        watchlist = Watchlist.query.filter_by(user_id=user_id).all()
+        watchlist_json = [item.to_dict() for item in watchlist]
+        #now fetch movie details, like poster and all
+        return render_template('watchlist.html',movies=watchlist_json)
+    # pylint: disable=broad-except
+    except Exception as e:
+        print('Error occurred',e)
+        return render_template('watchlist.html',show_message=True,message=e)
+
+@app.route("/remove_from_watchlist",methods=["POST"])
+@login_required
+def remove_from_watchlist():
+    """
+        method to delete a movie from watchlist
+    """
+    try:
+        data = json.loads(request.data)
+        user_id = User.query.filter_by(username=current_user.username).first().id
+        # pylint: disable=line-too-long
+        watchlist_entry = Watchlist.query.filter_by(user_id=user_id, movieId=data['movieId']).first()
+        db.session.delete(watchlist_entry)
+        db.session.commit()
+        return my_watchlist()
+    # pylint: disable=broad-except
+    except Exception as e:
+        print('Error occurred',e)
+        return render_template('watchlist.html',show_message=True,message=e)
+
+@app.route('/get-youtube-api-key', methods=['GET'])
+def get_api_key():
+    """
+        Sending API key to client
+    """
+    api_key = os.getenv("YOUTUBE_API_KEY")
+    if api_key:
+        return jsonify({"key": api_key}), 200
+    return jsonify({"error": "API key not found"}), 404

@@ -61,46 +61,67 @@ $(document).ready(function () {
     function fetchPosterURL(imdbID) {
       var posterURL = null;
       $.ajax({
-          type: "GET",
-          url: "/getPosterURL", 
-          dataType: "json",
-          data: { imdbID: imdbID },
-          async: false, 
-          success: function (response) {
-              posterURL = response.posterURL;
-          },
-          error: function (error) {
-              console.log("Error fetching poster URL: " + error);
-          },
+        type: "GET",
+        url: "/getPosterURL",
+        dataType: "json",
+        data: { imdbID: imdbID },
+        async: false,
+        success: function (response) {
+          posterURL = response.posterURL;
+        },
+        error: function (error) {
+          console.log("Error fetching poster URL: " + error);
+        },
       });
-  
+
       return posterURL;
-    };  
+    }
 
     function fetchTrailerVideoID(movieTitle) {
       let videoID = null;
+    
+      // Fetch API key from the server
       $.ajax({
         type: "GET",
-        url: "https://www.googleapis.com/youtube/v3/search",
-        data: {
-          part: "snippet",
-          q: `${movieTitle} trailer`,
-          type: "video",
-          maxResults: 1,
-          key: "AIzaSyDGpt_eIAeRhtwN6_RGLIWRZtFCxSEV9JM",
-        },
+        url: "/get-youtube-api-key", // Server endpoint to get API key
         async: false,
-        success: function (response) {
-          if (response.items && response.items.length > 0) {
-            videoID = response.items[0].id.videoId;
+        success: function (apiResponse) {
+          if (apiResponse.key) {
+            const apiKey = apiResponse.key;
+    
+            // Fetch trailer video ID using the retrieved API key
+            $.ajax({
+              type: "GET",
+              url: "https://www.googleapis.com/youtube/v3/search",
+              data: {
+                part: "snippet",
+                q: `${movieTitle} trailer`,
+                type: "video",
+                maxResults: 1,
+                key: apiKey,
+              },
+              async: false,
+              success: function (response) {
+                if (response.items && response.items.length > 0) {
+                  videoID = response.items[0].id.videoId;
+                }
+              },
+              error: function (error) {
+                console.log("Error fetching trailer video ID: " + error);
+              },
+            });
+          } else {
+            console.log("API key not found in the server response.");
           }
         },
         error: function (error) {
-          console.log("Error fetching trailer video ID: " + error);
+          console.log("Error fetching API key: " + error);
         },
       });
+    
       return videoID;
     }
+    
 
     function embedTrailer(videoID, container) {
       if (videoID) {
@@ -134,17 +155,29 @@ $(document).ready(function () {
         for (var i = 0; i < data.length; i++) {
           const movieTitle = data[i].title;
           const videoID = fetchTrailerVideoID(movieTitle);
+          console.log("Error fetching trailer video ID: " + movieTitle + videoID);
           var column = $('<div class="col-sm-12"></div>');
           var card = `<div class="card movie-card">
             <div class="row no-gutters">
               <div class="col-md-8">
                 <div class="card-body">
                   <h5 class="card-title">${data[i].title}</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">${data[i].runtime} minutes</h6>
+                  <h6 class="card-subtitle mb-2 text-muted">${
+                    data[i].runtime
+                  } minutes</h6>
                   <p class="card-text">${data[i].overview}</p>
                   <div id="trailer-container-${i}" class="trailer-container"></div>
-                  <a target="_blank" href="https://www.imdb.com/title/${data[i].imdb_id}" class="btn btn-primary">Check out IMDb Link</a>
+                  <a target="_blank" href="https://www.imdb.com/title/${
+                    data[i].imdb_id
+                  }" class="btn btn-primary">Check out IMDb Link</a>
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="modalButton-${i}" data-bs-target="#reviewModal-${i}">Write a review</button>
+                  <button type="button" onclick="addTOWatchListClick('${
+                    data[i].movieId
+                  }','${data[i].title}','${data[i].overview}','${
+            data[i].poster_path
+          }','${data[i].imdb_id}','${
+            data[i].runtime
+          }', '${i}')" id="addToWatchList-${i}" class="btn btn-primary modal-save">Add To Watchlist</button>
                   <div class="movieId" hidden>${data[i].movieId}</div>
                   <div class="genres" hidden>${data[i].genres}</div>
                   <div class="imdb_id" hidden>${data[i].imdb_id}</div>
@@ -153,12 +186,16 @@ $(document).ready(function () {
                 </div>
               </div>
               <div class="col-md-4">
-                  <img src="${fetchPosterURL(data[i].imdb_id)}" alt="Movie Poster" class="poster-image" style="width: 75%; height: auto; margin: 0;">
+                  <img src="${fetchPosterURL(
+                    data[i].imdb_id
+                  )}" alt="Movie Poster" class="poster-image" style="width: 75%; height: auto; margin: 0;">
               </div>
               <div class="row">
-                <div class="card-footer text-muted">Genres : ${data[i].genres}</div>  
+                <div class="card-footer text-muted">Genres : ${
+                  data[i].genres
+                }</div>  
               </div>
-            </div>`
+            </div>`;
           var modal = `
           <div class="modal fade" id="reviewModal-${i}" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -177,7 +214,7 @@ $(document).ready(function () {
                 </div>
               </div>
             </div>
-          </div>`
+          </div>`;
           modalParent.innerHTML += modal;
           column.append(card);
           list.append(column);
@@ -215,7 +252,7 @@ $(document).ready(function () {
     };
 
     // to check if any movies selected before giving feedback
-    if(myForm.length == 0){
+    if (myForm.length == 0) {
       alert("No movies found. Please add movies to provide feedback.");
       return;
     }
@@ -270,13 +307,13 @@ $(document).ready(function () {
       alert("No feedback data found. Please provide feedback.");
       return;
     }
-  
+
     var emailString = $("#emailField").val();
     data.email = emailString;
-  
+
     // Remove the "emailSent" flag to allow sending the email again
     localStorage.removeItem("emailSent");
-  
+
     $.ajax({
       type: "POST",
       url: "/sendMail",
@@ -291,8 +328,8 @@ $(document).ready(function () {
         setTimeout(function () {
           $("#emailSentSuccess").fadeOut("slow");
         }, 2000);
-        $('#area1').attr('placeholder', 'Email'); 
-        $('#emailField').val('');
+        $("#area1").attr("placeholder", "Email");
+        $("#emailField").val("");
       },
       error: function (error) {
         $("#loaderSuccess").attr("class", "d-none");

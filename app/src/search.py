@@ -8,7 +8,6 @@ import os
 import pandas as pd
 #from flask import jsonify, request, render_template
 
-
 app_dir = os.path.dirname(os.path.abspath(__file__))
 code_dir = os.path.dirname(app_dir)
 project_dir = os.path.dirname(code_dir)
@@ -18,7 +17,6 @@ class Search:
     """
     Search feature for landing page
     """
-
     df = pd.read_csv(project_dir + "/data/movies.csv")
 
     def __init__(self):
@@ -68,6 +66,11 @@ class Search:
         """
         return self.results(word)[:10]
 
+    def format_movie_name(self,movie):
+        """
+        Function to format movie name
+        """
+        return movie.replace(" ", "%20")
 
 #if __name__ == "__main__":
 #    app.run()

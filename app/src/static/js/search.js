@@ -9,8 +9,8 @@ $(document).ready(function () {
             genres: main_element[5].textContent,
             imdb_id: main_element[6].textContent,
             poster_path: main_element[7].textContent,
-            review_text: $(`#review-${i}`)[0].value
-        }
+            review_text: $(`#review-${i}`)[0].value,
+        };
         $.ajax({
             type: "POST",
             url: "/postReview",
@@ -20,7 +20,7 @@ $(document).ready(function () {
             cache: false,
             data: JSON.stringify(data),
             success: (response) => {
-                $(`#reviewModal-${i}`).modal('toggle');
+                $(`#reviewModal-${i}`).modal("toggle");
                 $(`#review-${i}`).value = "";
                 $("#saved-flash").attr("hidden", false);
             },
@@ -31,11 +31,46 @@ $(document).ready(function () {
 
                 // Display error message
                 alert(`Error: ${errorMessage}`);
-            }
+            },
+        });
+    };
+
+    addTOWatchListClick = (
+        movieId,
+        title,
+        overview,
+        poster_path,
+        imdb_id,
+        runtime,
+        i
+    ) => {
+        const data = {
+            movieId,
+            title,
+            overview,
+            poster_path,
+            imdb_id,
+            runtime,
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/add_to_watchlist",
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            traditional: "true",
+            cache: false,
+            data: JSON.stringify(data),
+            success: (response) => {
+                $(`#addToWatchList-${i}`).prop("disabled", true);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown, "-----------------");
+            },
         });
     };
 
     modalOnClose = (i) => {
-        $(`#reviewModal-${i}`).modal('toggle');
+        $(`#reviewModal-${i}`).modal("toggle");
     };
 });
