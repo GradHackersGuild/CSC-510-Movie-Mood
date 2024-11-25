@@ -2,9 +2,9 @@ $(document).ready(function () {
     modalOnClick = (i) => {
         var main_element = $(`#modalButton-${i}`).siblings();
         var data = {
-            title : main_element[0].textContent,
-            runtime : parseInt(main_element[1].textContent),
-            overview : main_element[2].textContent,            
+            title: main_element[0].textContent,
+            runtime: parseInt(main_element[1].textContent),
+            overview: main_element[2].textContent,
             movieId: main_element[4].textContent,
             genres: main_element[5].textContent,
             imdb_id: main_element[6].textContent,
@@ -20,23 +20,22 @@ $(document).ready(function () {
             cache: false,
             data: JSON.stringify(data),
             success: (response) => {
-              $(`#reviewModal-${i}`).modal('toggle');
-              $(`#review-${i}`).value = "";
-              $("#saved-flash").attr("hidden", false);
+                $(`#reviewModal-${i}`).modal('toggle');
+                $(`#review-${i}`).value = "";
+                $("#saved-flash").attr("hidden", false);
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
                 // Parse error response
                 const errorData = JSON.parse(jqXHR.responseText);
                 const errorMessage = errorData.message;
-            
+
                 // Display error message
                 alert(`Error: ${errorMessage}`);
             }
-          });
+        });
     };
-    
+
     modalOnClose = (i) => {
         $(`#reviewModal-${i}`).modal('toggle');
     };
 });
-  

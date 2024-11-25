@@ -1,0 +1,63 @@
+{% extends 'shared/layout2.html' %}
+
+{% block extracss %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/search2.css') }}" />
+{% endblock %}
+
+{% block extrajs %}
+<script src="{{ url_for('static', filename='js/search2.js') }}"></script>
+{% endblock %}
+
+{% block maincontent %}
+<div class="search-container">
+    <div class="heading1">
+        <h2>
+            <center>🎬 Movie Mood 🎬</center>
+        </h2>
+        <h6 class="tipHeader">✨ Select up to 5 movies to get a tailored watchlist ✨</h6>
+    </div>
+
+    <div class="search-section">
+        <h3 class="mb-4">Selected Movie(s)</h3>
+        <div class="row">
+            <div class="col-md-9">
+                <div class="search-box">
+                    <input class="form-control search-input" type="search" placeholder="Search for a movie..."
+                        aria-label="Search" id="searchBox" />
+                </div>
+                <div class="selected-movies-list">
+                    <ul class="list-group" id="selectedMovies"></ul>
+                </div>
+            </div>
+            <div class="col-md-3 d-flex align-items-start justify-content-end">
+                <button type="button" class="predict-btn" id="predict">
+                    Get Recommendations
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-success fade show" role="alert" id="saved-flash" hidden>
+        <div class="d-flex align-items-center">
+            <svg class="me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            Review saved successfully!
+        </div>
+    </div>
+
+    <div id="recommended_block"></div>
+
+    <div class="movie-grid-row" id="predictedMovies"></div>
+
+    <div class="loader d-none" id="loader">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div id="modalParent"></div>
+</div>
+{% endblock %}
