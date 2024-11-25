@@ -17,7 +17,6 @@ class Search:
     """
     Search feature for landing page
     """
-
     df = pd.read_csv(project_dir + "/data/movies.csv")
 
     def __init__(self):
@@ -72,6 +71,6 @@ class Search:
         Function to format movie name
         """
         return movie.replace(" ", "%20")
-    
+
 #if __name__ == "__main__":
 #    app.run()

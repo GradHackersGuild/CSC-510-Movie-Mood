@@ -431,7 +431,6 @@ def add_to_watchlist():
     """
     try:
         data = json.loads(request.data)
-        print(data,'----------------')
         user_id = User.query.filter_by(username=current_user.username).first().id
         poster_path = f"https://image.tmdb.org/t/p/w500{data['poster_path']}"
         # pylint: disable=line-too-long
@@ -439,6 +438,7 @@ def add_to_watchlist():
         db.session.add(next_watch)
         db.session.commit()
         return jsonify({"success": True})
+    # pylint: disable=broad-except
     except Exception as e:
         print(e)
         return jsonify({"success": False,"error":e})
@@ -454,8 +454,8 @@ def my_watchlist():
         watchlist = Watchlist.query.filter_by(user_id=user_id).all()
         watchlist_json = [item.to_dict() for item in watchlist]
         #now fetch movie details, like poster and all
-        print('im here ---------------------')
         return render_template('watchlist.html',movies=watchlist_json)
+    # pylint: disable=broad-except
     except Exception as e:
         print('Error occurred',e)
         return render_template('watchlist.html',show_message=True,message=e)
@@ -474,6 +474,7 @@ def remove_from_watchlist():
         db.session.delete(watchlist_entry)
         db.session.commit()
         return my_watchlist()
+    # pylint: disable=broad-except
     except Exception as e:
         print('Error occurred',e)
         return render_template('watchlist.html',show_message=True,message=e)
