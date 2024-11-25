@@ -469,6 +469,7 @@ def remove_from_watchlist():
     try:
         data = json.loads(request.data)
         user_id = User.query.filter_by(username=current_user.username).first().id
+        # pylint: disable=line-too-long
         watchlist_entry = Watchlist.query.filter_by(user_id=user_id, movieId=data['movieId']).first()
         db.session.delete(watchlist_entry)
         db.session.commit()
@@ -476,7 +477,7 @@ def remove_from_watchlist():
     except Exception as e:
         print('Error occurred',e)
         return render_template('watchlist.html',show_message=True,message=e)
-    
+
 @app.route('/get-youtube-api-key', methods=['GET'])
 def get_api_key():
     """
