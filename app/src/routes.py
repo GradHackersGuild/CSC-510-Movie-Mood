@@ -139,6 +139,15 @@ def search_page():
         return render_template("search.html", user=current_user, search=True)
     return redirect(url_for('landing_page'))
 
+def get_reviews(data):
+    movies = json.loads(data)
+    movie_ids = []
+    for movie in movies:
+        movie_ids.append(movie['movieId'])
+    print(movie_ids,'============================')
+    result = Movie.query.filter(Movie.movieId.in_(movie_ids)).all()
+    print(result,'----------------')
+
 @app.route("/predict", methods=["POST"])
 def predict():
     """
@@ -153,6 +162,7 @@ def predict():
             training_data.append(movie_with_rating)
     data = recommend_for_new_user(training_data)
     data = data.to_json(orient="records")
+    get_reviews(data)
     return jsonify(data)
 
 @app.route("/search", methods=["POST"])
@@ -286,7 +296,6 @@ def movie_page():
         Get movies and their reviews
     """
     yt_api_key = os.getenv("YOUTUBE_API_KEY")
-    print(yt_api_key)
     movies_ojbects = Movie.query.all()
     movies = []
     for movie_object in movies_ojbects:
@@ -488,3 +497,36 @@ def get_api_key():
     if api_key:
         return jsonify({"key": api_key}), 200
     return jsonify({"error": "API key not found"}), 404
+
+def format_movie_name(self,movie):
+        """
+        Function to format movie name
+        """
+        return movie.replace(" ", "%20")
+
+
+ # def get_movie_from_tmdb(self,query):
+    #     """
+    #     function to get movie from imdb
+    #     """
+    #     tmdb_api_key = os.getenv("TMDB_API_KEY")
+    #     timeout = 100
+    #     # movie = self.format_movie_name(query)
+    #     url = f"https://api.themoviedb.org/3/search/movie?query={self.format_movie_name(query)}&page=1&api_key={tmdb_api_key}&language=en-US"
+    #     response = requests.get(url, timeout=timeout)
+        # data = response.json()
+
+@app.route('/search_movie',methods=["GET"])
+def search_movie():
+    try:
+        movie_name = request.args.get("movie_name")
+        #format the name 
+        fomatted_movie = format_movie_name(movie_name)
+        url = f"https://api.themoviedb.org/3/search/movie?query={fomatted_movie}&page=1&api_key={TMDB_API_KEY}&language=en-US"
+        #call tmdb APi 
+        response = requests.get(url, timeout=100)
+        #return the result
+        print(response,'-----------------')
+        render_template("movie.html")
+    except:
+        print('There was an error')

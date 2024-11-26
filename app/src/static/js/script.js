@@ -79,7 +79,7 @@ $(document).ready(function () {
 
     function fetchTrailerVideoID(movieTitle) {
       let videoID = null;
-    
+
       // Fetch API key from the server
       $.ajax({
         type: "GET",
@@ -88,7 +88,7 @@ $(document).ready(function () {
         success: function (apiResponse) {
           if (apiResponse.key) {
             const apiKey = apiResponse.key;
-    
+
             // Fetch trailer video ID using the retrieved API key
             $.ajax({
               type: "GET",
@@ -118,10 +118,9 @@ $(document).ready(function () {
           console.log("Error fetching API key: " + error);
         },
       });
-    
+
       return videoID;
     }
-    
 
     function embedTrailer(videoID, container) {
       if (videoID) {
@@ -155,7 +154,9 @@ $(document).ready(function () {
         for (var i = 0; i < data.length; i++) {
           const movieTitle = data[i].title;
           const videoID = fetchTrailerVideoID(movieTitle);
-          console.log("Error fetching trailer video ID: " + movieTitle + videoID);
+          console.log(
+            "Error fetching trailer video ID: " + movieTitle + videoID
+          );
           var column = $('<div class="col-sm-12"></div>');
           var card = `<div class="card movie-card">
             <div class="row no-gutters">
@@ -173,9 +174,11 @@ $(document).ready(function () {
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" id="modalButton-${i}" data-bs-target="#reviewModal-${i}">Write a review</button>
                   <button type="button" onclick="addTOWatchListClick('${
                     data[i].movieId
-                  }','${data[i].title}','${data[i].overview}','${
-            data[i].poster_path
-          }','${data[i].imdb_id}','${
+                  }','${data[i].title.replace(/'/g, "\\'")}', '${data[
+            i
+          ].overview.replace(/'/g, "\\'")}','${data[i].poster_path}','${
+            data[i].imdb_id
+          }','${
             data[i].runtime
           }', '${i}')" id="addToWatchList-${i}" class="btn btn-primary modal-save">Add To Watchlist</button>
                   <div class="movieId" hidden>${data[i].movieId}</div>
