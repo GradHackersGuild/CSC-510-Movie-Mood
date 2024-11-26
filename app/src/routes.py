@@ -511,12 +511,12 @@ def search_movie():
     """
     try:
         movie_name = request.args.get("movie_name")
-        if(movie_name):
-        #format the name 
+        if movie_name:
+            #format the name
             fomatted_movie = format_movie_name(movie_name)
             # pylint: disable=line-too-long
             url = f"https://api.themoviedb.org/3/search/movie?query={fomatted_movie}&page=1&api_key={TMDB_API_KEY}&language=en-US"
-        #call tmdb APi 
+            #call tmdb APi
             response = requests.get(url, timeout=100)
             #return the result
             movies = response.json()
