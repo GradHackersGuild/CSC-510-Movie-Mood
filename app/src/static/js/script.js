@@ -122,6 +122,56 @@ $(document).ready(function () {
       return videoID;
     }
 
+    function fetchRapidAPIKey(callback) {
+      $.ajax({
+        type: "GET",
+        url: "/get-rapidapi-key",
+        success: function (response) {
+          callback(null, response.key);
+        },
+        error: function (error) {
+          console.error("Error fetching API key:", error);
+          callback(error, null);
+        }
+      });
+    }
+    
+    function fetchStreamingOptions(movieId, callback) {
+      // Step 1: Fetch the API key dynamically
+      fetchRapidAPIKey(function (err, apiKey) {
+        if (err) {
+          console.error("Could not fetch API key");
+          callback(err, null);
+          return;
+        }
+    
+        const settings = {
+          async: true,
+          crossDomain: true,
+          url: `https://streaming-availability.p.rapidapi.com/shows/movie/${movieId}`,
+          method: "GET",
+          headers: {
+            "x-rapidapi-key": apiKey, 
+            "x-rapidapi-host": "streaming-availability.p.rapidapi.com",
+          },
+        };
+    
+        $.ajax(settings)
+          .done(function (response) {
+            if (response.streamingOptions && response.streamingOptions.us) {
+              callback(null, response.streamingOptions.us);
+            } else {
+              callback("No streaming options found", null);
+            }
+          })
+          .fail(function (error) {
+            console.error("Error fetching streaming options:", error);
+            callback(error, null);
+          });
+      });
+    }
+
+
     function embedTrailer(videoID, container) {
       if (videoID) {
         const iframeHTML = `
@@ -154,9 +204,9 @@ $(document).ready(function () {
         for (var i = 0; i < data.length; i++) {
           const movieTitle = data[i].title;
           const videoID = fetchTrailerVideoID(movieTitle);
-          console.log(
-            "Error fetching trailer video ID: " + movieTitle + videoID
-          );
+          const movieId = data[i].movieId;
+          console.log("Error fetching trailer video ID: " + movieTitle + videoID);
+
           var column = $('<div class="col-sm-12"></div>');
           var card = `<div class="card movie-card">
             <div class="row no-gutters">
@@ -167,6 +217,9 @@ $(document).ready(function () {
                     data[i].runtime
                   } minutes</h6>
                   <p class="card-text">${data[i].overview}</p>
+                  <div id="streaming-container-${i}" class="streaming-container">
+                    <p>Loading streaming options...</p>
+                  </div>
                   <div id="trailer-container-${i}" class="trailer-container"></div>
                   <a target="_blank" href="https://www.imdb.com/title/${
                     data[i].imdb_id
@@ -222,6 +275,29 @@ $(document).ready(function () {
           column.append(card);
           list.append(column);
           embedTrailer(videoID, `#trailer-container-${i}`);
+          for (let i = 0; i < data.length; i++) {
+            const movieId = data[i].movieId;
+          
+            fetchStreamingOptions(movieId, function (err, streamingOptions) {
+              const container = $(`#streaming-container-${i}`);
+              console.log(`Updating container: #streaming-container-${i}, Found: ${container.length > 0}`);
+              
+              if (container.length > 0) {
+                if (err) {
+                  container.html("<p>No streaming options available</p>");
+                } else {
+                  let optionsHTML = "<p>Streaming Options</p><ul>";
+                  streamingOptions.forEach(option => {
+                    optionsHTML += `<li><a href="${option.link}" target="_blank">${option.service.name} (${option.type})</a></li>`;
+                  });
+                  optionsHTML += "</ul>";
+                  container.html(optionsHTML);
+                }
+              } else {
+                console.log(`Container #streaming-container-${i} not found in DOM.`);
+              }
+            });
+          }
         }
         $("#loader").attr("class", "d-none");
       },
