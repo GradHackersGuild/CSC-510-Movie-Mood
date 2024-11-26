@@ -495,5 +495,5 @@ def get_rapidapi_key():
     """
         Sending API key to client
     """
-    RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY")
-    return {"key": RAPIDAPI_KEY}
+    api_key = os.getenv("RAPIDAPI_KEY")
+    return {"key": api_key}
