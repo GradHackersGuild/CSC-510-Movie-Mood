@@ -56,25 +56,82 @@
       id="landingTopNav"
     >
       <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url_for('landing_page') }}">Movie Mood🍿</a>
+        <a class="navbar-brand" href="{{ url_for('landing_page') }}"
+          >Movie Mood🍿</a
+        >
         {% if current_user.is_authenticated %}
-          <div class="ms-auto">Welcome {{ user }}!</div>
-          <a type="button" class="btn btn-success ms-auto" href="{{ url_for('chat_page') }}">Chat Room</a>
-          <a type="button" class="btn btn-warning ms-2" href="{{ url_for('movie_page') }}">Movie Mood Hub</a>
-          <a type="button" class="btn btn-danger ms-1" href="{{ url_for('new_movies') }}">New Movies</a>
-          <a type="button" class="btn btn-success ms-1" href="{{ url_for('new_series') }}">Today's Series</a>
-          <a type="button" class="btn btn-info ms-1" href="{{ url_for('celebrity') }}">Celebrity</a>
-          {% if search is true %}
-            <a type="button" class="btn btn-primary ms-2" href="{{ url_for('profile_page') }}">Profile Page</a>
-          {% else %}
-            <a type="button" class="btn btn-primary ms-2" href="{{ url_for('search_page') }}">Search Page</a>  
-          {% endif %}          
-          <a type="button" class="btn btn-outline-primary ms-2" href="{{ url_for('logout') }}">Logout</a>
-          {% else %}
-            <a type="button" class="btn btn-outline-primary ms-auto" href="{{ url_for('signup') }}">Sign Up</a>
-            <a type="button" class="btn btn-outline-primary ms-2" href="{{ url_for('login') }}">Login</a>
-          {% endif %}
-
+        <div class="ms-auto">Welcome {{ user }}!</div>
+        <a
+          type="button"
+          class="btn btn-success ms-auto"
+          href="{{ url_for('chat_page') }}"
+          >Chat Room</a
+        >
+        <a
+          type="button"
+          class="btn btn-warning ms-2"
+          href="{{ url_for('movie_page') }}"
+          >Movie Mood Hub</a
+        >
+        <a
+          type="button"
+          class="btn btn-danger ms-1"
+          href="{{ url_for('new_movies') }}"
+          >New Movies</a
+        >
+        <a
+          type="button"
+          class="btn btn-success ms-1"
+          href="{{ url_for('new_series') }}"
+          >Today's Series</a
+        >
+        <a
+          type="button"
+          class="btn btn-info ms-1"
+          href="{{ url_for('celebrity') }}"
+          >Celebrity</a
+        >
+        <a
+          type="button"
+          class="btn btn-success ms-1"
+          href="{{ url_for('my_watchlist') }}"
+          >My Watchlist</a
+        >
+        {% if search is true %}
+        <a
+          type="button"
+          class="btn btn-primary ms-2"
+          href="{{ url_for('profile_page') }}"
+          >Profile Page</a
+        >
+        {% else %}
+        <a
+          type="button"
+          class="btn btn-primary ms-2"
+          href="{{ url_for('search_page') }}"
+          >Search Page</a
+        >
+        {% endif %}
+        <a
+          type="button"
+          class="btn btn-outline-primary ms-2"
+          href="{{ url_for('logout') }}"
+          >Logout</a
+        >
+        {% else %}
+        <a
+          type="button"
+          class="btn btn-outline-primary ms-auto"
+          href="{{ url_for('signup') }}"
+          >Sign Up</a
+        >
+        <a
+          type="button"
+          class="btn btn-outline-primary ms-2"
+          href="{{ url_for('login') }}"
+          >Login</a
+        >
+        {% endif %}
       </div>
     </nav>
     <!-- Below is for the main content of whatever specific page we are on, ie. login page, search page, etc -->
