@@ -1,0 +1,70 @@
+abstract: '<h2><strong>Initial Release</strong></h2>
+
+  <h3><strong>New Features</strong></h3>
+
+  <p><strong>1. Database hosted on Render</strong>
+
+  - Migrated from local database instance to one hosted on Render.</p>
+
+  <p><strong>2. Watchlists:</strong>
+
+  - Users can now add trending and recommended movies to a watchlist which can be
+  accessed anytime.
+
+  - Users can view watchlists created by others and clone them to their profiles to
+  modify the list.</p>
+
+  <p><strong>3. Embedded Movie Trailers:</strong>
+
+  - Users can now watch the trailers of the recommended movies on the website.</p>
+
+
+
+  <h3><strong>Bug Fixes:</strong></h3>
+
+  <p><strong>1. User login:</strong> Incorrect methods of storing hashed passwords
+  in database provided problems on user login and account creation. The invalid salt
+  error has now been fixed.</p>'
+authors:
+- affiliation: North Carolina State University, Raleigh
+  family-names: Rishi Singhal
+- family-names: Tanmay Pardeshi
+- family-names: Aditya Pai
+- family-names: jayeshjakkani
+- family-names: lvxuntao
+- family-names: Ashish Rajpurohit
+- family-names: Hua Yang
+- affiliation: NC State University
+  family-names: Ananya Mantravadi
+- family-names: Ankit Arvind Tiwari
+- family-names: Amit Ghetiya
+- family-names: Sathwik Kalvakuntla
+- family-names: Kattarishabh
+- family-names: Suraj Pawar
+- family-names: huygensCortex
+- family-names: Samuel Kwiatkowski-Martin
+- family-names: abhinav110595
+- family-names: kwiatk67
+- family-names: Keertikumar Malagund
+- family-names: Jay Jagtap
+- family-names: cray94
+- affiliation: North Carolina State University
+  family-names: Samarth Shetty
+- affiliation: North Carolina State University
+  family-names: MakarandPundlik
+- family-names: YinanWusoymilk
+- affiliation: North Carolina State University
+  family-names: Varatharajan
+  given-names: Varun
+- affiliation: North Carolina State University
+  family-names: Varghese
+  given-names: Michelle
+cff-version: 1.2.0
+date-released: '2024-11-26'
+doi: 10.5281/zenodo.14219914
+license:
+- cc-by-4.0
+repository-code: https://github.com/GradHackersGuild/CSC-510-Movie-Mood/tree/v1.0
+title: 'GradHackersGuild/CSC-510-Movie-Mood: v1.0'
+type: software
+version: v1.0
