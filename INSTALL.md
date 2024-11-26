@@ -26,12 +26,18 @@ To get an API key from Google Console for Youtube Data:
 3. Go to API/Services section and search for Youtube Data API v3 and add it.
 4. Generate API credentials for it after agreeing to the terms of use.
 
+To get an API key from Rapid API for Streaming Platforms:
+1. Sign up with Rapid API (free tier). [Rapid API](https://rapidapi.com/hub)
+2. Search for "movies" or "Streaming Availability" and subscribe to the free version.
+3. You will find the code snippets and example responses along with your API key.
+
 ### Step 4: Create a `.env` file
 In the project directory, create a `.env` file and add your API keys:
 ```bash
 # .env
 TMDB_API_KEY=YOUR_TMDB_API_KEY
 YOUTUBE_API_KEY=YOUR_YOUTUBE_API_KEY
+RAPIDAPI_KEY=YOUR_RAPIDAPI_KEY
 ```
 
 ### Step 5: Host the database on Render.
