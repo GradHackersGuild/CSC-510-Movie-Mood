@@ -117,6 +117,7 @@ def profile_page():
         trailer_id = get_trailer_video_id(movie_object.title, yt_api_key)
         movie_object = Movie.query.filter_by(movieId=review.movieId).first()
         obj = {
+            "movieId": movie_object.movieId,
             "title" : movie_object.title,
             "runtime" : movie_object.runtime,
             "overview" : movie_object.overview,
@@ -125,7 +126,7 @@ def profile_page():
             "review_text" : review.review_text,
             "trailer_id" : trailer_id
         }
-        print(trailer_id)
+        #print(trailer_id)
         reviews.append(obj)
     return render_template("profile.html", user=current_user, reviews=reviews, search=False)
 
@@ -488,3 +489,11 @@ def get_api_key():
     if api_key:
         return jsonify({"key": api_key}), 200
     return jsonify({"error": "API key not found"}), 404
+
+@app.route('/get-rapidapi-key', methods=['GET'])
+def get_rapidapi_key():
+    """
+        Sending API key to client
+    """
+    RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY")
+    return {"key": RAPIDAPI_KEY}
