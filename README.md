@@ -21,7 +21,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/GradHackersGuild/CSC-510-Movie-Mood)
 
 
-![Home page](https://github.com/The-Powerpuff-Girls3/CSC-510-Movie-Mood/blob/master/asset/readme_main.png)
+
 <b>Movie Mood is an invitation to explore the boundless realms of cinema. With a constantly expanding library of films, an intuitive recommendation algorithm, a vibrant new chat room, a seamless account system, and a robust review platform, PopcornPicks transforms the way you discover, enjoy, and engage with movies. It’s a gateway to unforgettable cinematic adventures.</b>
 
 ## Why use Movie Mood?
@@ -54,49 +54,6 @@ With a user-friendly interface, enhanced profiles, and reliable performance back
 Whether you're looking for tailored recommendations, community interaction, or efficient discovery tools, Movie Mood transforms your movie nights into a curated cinematic journey. Let Movie Mood redefine how you explore and enjoy movies!
 
 ## Core Applications of the Project
-
-### Engaging in NEW Interactive UI
-![Engage](./asset/engage.gif)
-
-### User Authentication
-
-#### Sign up: Users can register to Movie Mood for personalized recommendations based on their emotional state.
-![Sign Up](./asset/signup.gif)
-
-#### Login: 
-![Login](./asset/login.gif)
-
-### MovieSphere
-
-#### Personalized Profile Page for Users
-![Profile](./asset/profile.gif)
-
-#### Check Out New and Upcoming Movies
-![New Movies](./asset/new_movies.gif)
-
-#### Movie Recommendation Mechanism
-![Recommend](./asset/predicted_movie_poster.gif)
-
-#### Write Movie Reviews
-![Review](./asset/review.gif)
-
-### User Interaction
-
-#### See What Others Have Seen
-![Movies](./asset/movies-list.gif)
-
-#### Private Chat Room
-![Chat](./asset/ChatRoom.gif)
-
-### ❤️Based on preivous project, we added two new UI tabs!❤️
-#### Today's series
-![Series](./asset/today_series.gif)
-
-#### Celebrity
-![Celebrity](./asset/celebrity.gif)
-
-Right now, users can enjoy more content from our website!!!
-
 
 ## Tech stack Used👨‍💻:
 
