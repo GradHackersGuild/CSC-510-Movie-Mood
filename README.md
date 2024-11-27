@@ -53,7 +53,18 @@ With a user-friendly interface, enhanced profiles, and reliable performance back
 
 Whether you're looking for tailored recommendations, community interaction, or efficient discovery tools, Movie Mood transforms your movie nights into a curated cinematic journey. Let Movie Mood redefine how you explore and enjoy movies!
 
-## Core Applications of the Project
+## Impreovements and features
+1. Brand new User Interface 
+![image](https://github.com/user-attachments/assets/04ff74f4-1975-4c80-a9bd-da0c38a99d3b)
+
+2. Embedded youtube trailer 
+![image](https://github.com/user-attachments/assets/9ac68da9-cba6-4bf7-9de8-cb23c7e38827)
+
+3.Reimplemented recommendation screen 
+![image](https://github.com/user-attachments/assets/ff4040ce-578d-45bc-8689-998d8977b2db)
+
+
+
 
 ## Tech stack Used👨‍💻:
 
