@@ -60,9 +60,14 @@ Whether you're looking for tailored recommendations, community interaction, or e
 2. Embedded youtube trailer 
 ![image](https://github.com/user-attachments/assets/9ac68da9-cba6-4bf7-9de8-cb23c7e38827)
 
-3.Reimplemented recommendation screen 
+3. Reimplemented recommendation screen 
 ![image](https://github.com/user-attachments/assets/ff4040ce-578d-45bc-8689-998d8977b2db)
 
+4. Add a movie to watchlist 
+![image](https://github.com/user-attachments/assets/c0db1343-16d7-40a0-b93f-041f73d7ea1a)
+
+5. My Watchlist 
+![image](https://github.com/user-attachments/assets/ba0a1a2f-2a17-49ae-9a63-f6a57a622e50)
 
 
 
