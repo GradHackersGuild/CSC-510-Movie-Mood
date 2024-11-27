@@ -1,76 +1,208 @@
 {% extends 'shared/layout.html' %}
 
 {% block extracss %}
-  <link
-    rel="stylesheet"
-    type="text/css"
-    href="{{ url_for('static', filename='css/movie.css') }}"
-  />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/movie.css') }}" />
+<style>
+  .movie-container {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    min-height: 100vh;
+    padding: 4rem 2rem;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #60a5fa, #e879f9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .page-subtitle {
+    color: #94a3b8;
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+  }
+
+  .movie-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+
+  .movie-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .card-body {
+    padding: 2rem;
+    color: #fff;
+  }
+
+  .card-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-subtitle {
+    color: #94a3b8;
+  }
+
+  .card-text {
+    color: #cbd5e1;
+    margin: 1.5rem 0;
+    line-height: 1.6;
+  }
+
+  .trailer-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    margin: 1.5rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .trailer-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .imdb-button {
+    background: linear-gradient(45deg, #f59e0b, #f97316);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .imdb-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+    color: white;
+  }
+
+  .poster-image {
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+    width: 100%;
+    height: auto;
+  }
+
+  .reviews-section {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 2rem;
+  }
+
+  .reviews-header {
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .review-item {
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .review-user {
+    color: #60a5fa;
+    margin-bottom: 0.5rem;
+  }
+
+  .review-text {
+    color: #cbd5e1;
+    line-height: 1.6;
+  }
+
+  .poster-image:hover {
+    transform: scale(1.03);
+  }
+
+  .genres-footer {
+    padding: 1rem 1.5rem;
+    background: rgba(255, 255, 255, 0.02);
+    color: #94a3b8;
+  }
+</style>
 {% endblock %}
 
 {% block extrajs %}
-  <script src="{{ url_for('static', filename='js/movie.js') }}"></script>  
+<script src="{{ url_for('static', filename='js/movie.js') }}"></script>
 {% endblock %}
 
 {% block maincontent %}
-<div class="container" style="margin-top:8%">
-    <div class="row">
-        <div class="col-md-12 heading1 pt-2">
-        <!-- Heading for picking a movie -->
-        <h2><center>Movies Page</center></h2>
-        <h6 class="tipHeader">✨Check what the user's have been up to!✨</h6>
-        </div>
-        <div class="col-md-12">
-          {% for movie in movies %}
-          {%
-            set imdb_link = "https://www.imdb.com/title/" + movie.imdb_id
-          %}
-          <div class="col-sm-12">
-            <div class="card movie-card">
-              <div class="row no-gutters">
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">{{movie.title}}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{movie.runtime}} minutes</h6>
-                    <p class="card-text"><strong>Movie Overview : </strong> {{movie.overview}}</p>
-                    <iframe width="560" height="315" 
-                      src="https://www.youtube.com/embed/{{ trailer_id }}" 
-                      frameborder="0" allowfullscreen>
-                    </iframe>
-                    <a target="_blank" href="{{ imdb_link }}" class="btn btn-primary">Check out IMDb Link</a>
-                  </div>
-                </div>
-                <div class="col-md-4 parent-poster">
-                  <div class="imdbId">{{ movie.imdb_id }}</div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="card"></div>
-                      <div class="card-header">
-                        Reviews by users
-                      </div>
-                      {% for review in movie.reviews %}
-                      <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                          <strong>Username: </strong>{{ review.username }}, <strong>Name: </strong>{{review.name}}
-                          <p>
-                            <strong>Review: </strong>
-                            {{review.review_text}}
-                          </p> 
-                        </li>                  
-                      </ul>
-                      {% endfor %}
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="card-footer text-muted">Genres : {{movie.genres}}</div>  
-                </div>
-              </div>
+<div class="movie-container">
+  <div class="page-header">
+    <h1 class="page-title">Movies Page</h1>
+    <p class="page-subtitle">✨ Check what the users have been up to! ✨</p>
+  </div>
+
+  <div class="container">
+    {% for movie in movies %}
+    {% set imdb_link = "https://www.imdb.com/title/" + movie.imdb_id %}
+    <div class="movie-card">
+      <div class="row no-gutters">
+        <div class="col-md-8">
+          <div class="card-body">
+            <h2 class="card-title">{{ movie.title }}</h2>
+            <h6 class="card-subtitle">{{ movie.runtime }} minutes</h6>
+            <p class="card-text"><strong>Movie Overview:</strong> {{ movie.overview }}</p>
+
+            <div class="trailer-container">
+              <iframe src="https://www.youtube.com/embed/{{ trailer_id }}" frameborder="0" allowfullscreen></iframe>
+            </div>
+
+            <a target="_blank" href="{{ imdb_link }}" class="imdb-button">Check out IMDb Link</a>
           </div>
-          {% endfor %}
         </div>
+
+        <div class="col-md-4 parent-poster">
+          <div class="imdbId">{{ movie.imdb_id }}</div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="reviews-section">
+            <div class="reviews-header">Community Reviews</div>
+            {% for review in movie.reviews %}
+            <div class="review-item">
+              <div class="review-user">
+                <strong>{{ review.username }}</strong> ({{ review.name }})
+              </div>
+              <p class="review-text">{{ review.review_text }}</p>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="genres-footer">
+        Genres: {{movie.genres}}
+      </div>
     </div>
+    {% endfor %}
+  </div>
 </div>
-</body>
 {% endblock %}

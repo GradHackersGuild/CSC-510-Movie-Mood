@@ -7,6 +7,7 @@ This code is licensed under MIT license (see LICENSE for details)
 from flask_login import UserMixin
 from src import db, login_manager
 
+
 @login_manager.user_loader
 def load_user(user_id):
     """
@@ -31,6 +32,8 @@ class User(db.Model, UserMixin):
         return f" {self.first_name} {self.last_name}"
 
 # pylint: disable=R0903
+
+
 class Movie(db.Model):
     """
         Movie Table
@@ -48,6 +51,8 @@ class Movie(db.Model):
         return f"{self.movieId} - {self.title}"
 
 # pylint: disable=R0903
+
+
 class Review(db.Model):
     """
         Review Table
@@ -55,8 +60,42 @@ class Review(db.Model):
     review_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     review_text = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    movieId = db.Column(db.Integer, db.ForeignKey('movie.movieId'), nullable=False)
+    movieId = db.Column(db.Integer, db.ForeignKey(
+        'movie.movieId'), nullable=False)
 
     def __repr__(self):
         return f"{self.user_id} - {self.movieId}"
-    
+
+
+class Watchlist(db.Model):
+    """
+        Watchlist Table
+    """
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    movieId = db.Column(db.Integer, nullable=False)
+    watched = db.Column(db.Boolean, nullable=False, default=False)
+    title = db.Column(db.String(200), nullable=False)
+    runtime = db.Column(db.Integer, nullable=True)
+    overview = db.Column(db.Text, nullable=True)
+    imdb_id = db.Column(db.String(20), nullable=False)
+    poster_path = db.Column(db.String(200), nullable=True)
+
+    def __repr__(self):
+        return f"{self.user_id} - {self.movieId} - ${self.watched}"
+
+    def to_dict(self):
+        """
+            method to JSONify the python class
+        """
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "movieId": self.movieId,
+            "watched": self.watched,
+            "title": self.title,
+            "runtime": self.runtime,
+            "overview": self.overview,
+            "imdb_id": self.imdb_id,
+            "poster_path": self.poster_path
+        }

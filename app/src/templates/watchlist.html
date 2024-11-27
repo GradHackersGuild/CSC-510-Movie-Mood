@@ -1,0 +1,133 @@
+{% extends 'shared/layout.html' %}
+
+{% block extracss %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/stylesheet2.css') }}" />
+<style>
+  .watchlist-container {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin-top: 60px;
+  }
+
+  .watchlist-title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text);
+  }
+
+  .movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .movie-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    transition: var(--transition);
+  }
+
+  .movie-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .movie-poster {
+    width: 100%;
+    height: 375px;
+    object-fit: cover;
+  }
+
+  .movie-info {
+    padding: 1rem;
+  }
+
+  .movie-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  .movie-overview {
+    font-size: 0.9rem;
+    color: var(--secondary);
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .movie-runtime {
+    font-size: 0.8rem;
+    color: var(--info);
+  }
+
+  .remove-btn {
+    background-color: var(--danger);
+    color: var(--text);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .remove-btn:hover {
+    background-color: var(--danger-dark);
+  }
+</style>
+{% endblock %}
+
+{% block extrajs %}
+<script defer src="{{ url_for('static', filename='js/login.js') }}"></script>
+{% endblock %}
+
+{% block maincontent %}
+<div class="container watchlist-container">
+  <h2 class="watchlist-title">🎬 My Watchlist 🍿</h2>
+  <div class="movie-grid">
+    {% for movie in movies %}
+    <div class="movie-card" id="movie-{{ movie.movieId }}">
+      <div class="movie-info">
+        <h3 class="movie-title">{{ movie.title }}</h3>
+        <p class="movie-overview">{{ movie.overview }}</p>
+        <p class="movie-runtime">Runtime: {{ movie.runtime }} minutes</p>
+        <button class="remove-btn" onclick="removeFromWatchList('{{ movie.movieId }}')">
+          Remove from watchlist
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  const removeFromWatchList = async (movieId) => {
+    const element = document.getElementById(`movie-${movieId}`);
+    if (element) {
+      element.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      element.style.opacity = '0';
+      element.style.transform = 'scale(0.8)';
+      setTimeout(() => element.remove(), 300);
+    }
+
+    await fetch("http://localhost:8000/remove_from_watchlist", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        credentials: "include",
+      },
+      body: JSON.stringify({ movieId }),
+    });
+  };
+</script>
+{% endblock %}

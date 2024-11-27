@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="eng">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Movie Mood</title>
+    <!-- Below links to our css files as well our favicon file(the little image that represents the website) -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/stylesheet2.css') }}" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='popcorn.ico') }}" />
+    <link rel="icon" href="{{ url_for('static', filename='images/Popcorn-icon.png') }}" />
+    <!-- Below is for if we need to put in extra css files for a specific page on the app since they all extend the layout.html -->
+    {% block extracss %}{% endblock %}
+    <!-- Below links the javascript files for the layout.html -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/script3.js') }}"></script>
+
+    <!-- Below is for extra javascript files -->
+    {% block extrajs %}{% endblock %}
+</head>
+
+<body class="landing-page">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark topNavBar fixed-top" id="landingTopNav">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('landing_page') }}">Movie Mood🍿</a>
+            {% if current_user.is_authenticated %}
+            <div class="ms-auto">Welcome {{ user }}!</div>
+            <a type="button" class="btn btn-success ms-auto" href="{{ url_for('chat_page') }}">Chat Room</a>
+            <a type="button" class="btn btn-warning ms-2" href="{{ url_for('movie_page') }}">Movie Mood Hub</a>
+            <a type="button" class="btn btn-danger ms-1" href="{{ url_for('new_movies') }}">New Movies</a>
+            <a type="button" class="btn btn-success ms-1" href="{{ url_for('new_series') }}">Today's Series</a>
+            <a type="button" class="btn btn-info ms-1" href="{{ url_for('celebrity') }}">Celebrity</a>
+            <a type="button" class="btn btn-success ms-1" href="{{ url_for('my_watchlist') }}">My Watchlist</a>
+            {% if search is true %}
+            <a type="button" class="btn btn-primary ms-2" href="{{ url_for('profile_page') }}">Profile Page</a>
+            {% else %}
+            <a type="button" class="btn btn-primary ms-2" href="{{ url_for('search_page') }}">Search Page</a>
+            {% endif %}
+            <a type="button" class="btn btn-outline-primary ms-2" href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+            <a type="button" class="btn btn-outline-primary ms-auto" href="{{ url_for('signup') }}">Sign Up</a>
+            <a type="button" class="btn btn-outline-primary ms-2" href="{{ url_for('login') }}">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+    <!-- Below is for the main content of whatever specific page we are on, ie. login page, search page, etc -->
+    {% block maincontent %}{% endblock %}
+</body>
+<!-- Below is for any page specific scripts we want to inlude directly in the html for some reason -->
+{% block extra_html_scripts %}{% endblock %}
+
+</html>

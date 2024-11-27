@@ -1,33 +1,140 @@
 {% extends 'shared/layout.html' %}
 
 {% block extracss %}
-<div class="container" style="margin-top: 60px;">
-  <div class="heading1">
-      <!-- Heading for new movies -->
-      <h2><center>🍿 New Movies Coming Soon! 🍿</center></h2>
-      <h6 class="tipHeader">✨Tip: Stay tuned for the latest releases! ✨</h6>
-  </div>
-  {% if show_message %}
-  <div class="alert alert-danger" role="alert">
-    Could not fetch new movies
-  </div>
-  {% else %}
-  <div class="row" style="margin-top: 25px;">
-      <div class="col-md-12">
-          <!-- Movie List Section -->
-          <h2>New Releases:</h2>
-          <ul class="list-group" id="newMoviesList">
-              <!-- Loop through the movies and dynamically generate list items -->
-              {% for movie in movies %}
-                  <li class="list-group-item">
-                      <h3>{{ movie.title }}</h3>
-                      <p>Release Date: {{ movie.release_date }}</p>
-                  </li>
-              {% endfor %}
-          </ul>
-      </div>
-  </div>
-  {% endif %}
+<style>
+    :root {
+        --primary: #2563eb;
+        --background: #0f172a;
+        --text: #f8fafc;
+        --border-radius: 0.75rem;
+        --transition: all 0.3s ease;
+    }
+
+    .movies-container {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(12px);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        margin-top: 20px;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .movies-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .movies-header h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 1rem;
+    }
+
+    .tip-header {
+        color: #64748b;
+        font-size: 1rem;
+        font-weight: 500;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.75rem;
+        border-radius: var(--border-radius);
+        display: inline-block;
+    }
+
+    .alert-danger {
+        background: rgba(220, 38, 38, 0.1);
+        color: #ef4444;
+        border: 1px solid rgba(220, 38, 38, 0.2);
+        border-radius: var(--border-radius);
+        padding: 1rem;
+    }
+
+    .movies-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+        margin-top: 1rem;
+    }
+
+    .movie-card {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: var(--border-radius);
+        padding: 1rem;
+        transition: var(--transition);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .movie-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    .movie-card h3 {
+        color: var(--text);
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+    }
+
+    .movie-card p {
+        color: #64748b;
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    .section-title {
+        color: var(--text);
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--primary);
+        display: inline-block;
+        text-align: center;
+        width: 100%;
+    }
+
+    @media (max-width: 768px) {
+        .movies-container {
+            margin: 20px 1rem;
+            padding: 1rem;
+        }
+
+        .movies-header h2 {
+            font-size: 2rem;
+        }
+
+        .movies-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="movies-container">
+    <div class="movies-header">
+        <h2>🍿 New Movies Coming Soon! 🍿</h2>
+        <div class="tip-header">✨ Tip: Stay tuned for the latest releases! ✨</div>
+    </div>
+
+    {% if show_message %}
+    <div class="alert alert-danger" role="alert">
+        Could not fetch new movies
+    </div>
+    {% else %}
+    <div class="movies-content">
+        <h2 class="section-title">New Releases</h2>
+        <div class="movies-grid">
+            {% for movie in movies %}
+            <div class="movie-card">
+                <h3>{{ movie.title }}</h3>
+                <p>Release Date: {{ movie.release_date }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 </div>
-<br /><br /><br />
 {% endblock %}

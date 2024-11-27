@@ -2,6 +2,111 @@
 
 {% block extracss %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/signup.css') }}">
+<style>
+  .signup-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1e2024 0%, #18181d 100%);
+    padding: 2rem 1rem;
+  }
+
+  .signup-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .signup-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .signup-header h2 {
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .signup-header .emoji {
+    font-size: 2rem;
+    margin: 0 0.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  .form-group label {
+    color: #ffffff;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    opacity: 0.9;
+  }
+
+  .form-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    color: #ffffff;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+  }
+
+  .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .btn-signup {
+    background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem;
+    width: 100%;
+    color: #ffffff;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+    margin-top: 1rem;
+  }
+
+  .btn-signup:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(45deg, #ff8e8e, #ff6b6b);
+  }
+
+  .alert {
+    background: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.2);
+    color: #ff6b6b;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .spinner-border {
+    color: #ff6b6b;
+  }
+
+  @media (max-width: 768px) {
+    .signup-card {
+      padding: 2rem;
+    }
+  }
+</style>
 {% endblock %}
 
 {% block extrajs %}
@@ -9,43 +114,51 @@
 {% endblock %}
 
 {% block maincontent %}
-<div class="container" style="margin-top: 60px;" id="centralDivLanding">
-  <div class="heading1">
-    <h2><center>🎬 Movie Mood🍿: Signup for an Account! 🎬</center></h2>
+<div class="signup-container">
+  <div class="signup-card">
+    <div class="signup-header">
+      <span class="emoji">🎬</span>
+      <h2>Movie Mood</h2>
+      <span class="emoji">🍿</span>
+    </div>
+
     {% if show_message %}
-      <div class="alert alert-danger" role="alert">
-          {{ message }}
-      </div>
+    <div class="alert" role="alert">
+      {{ message }}
+    </div>
     {% endif %}
-    <br>
-      <form id="signup-form" method="post" action="">
+
+    <form id="signup-form" method="post" action="">
       <div class="form-group">
-        <label for="username_label">Username</label>
-        <input name="username" type="text" class="form-control" placeholder="Enter Username" required>
+        <label for="username">Username</label>
+        <input name="username" type="text" class="form-control" placeholder="Choose a username" required>
       </div>
+
       <div class="form-group">
-        <label for="first_name_label">First Name</label>
-        <input name="first_name" type="text" class="form-control" placeholder="Enter First Name" required>
+        <label for="first_name">First Name</label>
+        <input name="first_name" type="text" class="form-control" placeholder="Enter your first name" required>
       </div>
+
       <div class="form-group">
-        <label for="last_name_label">Last Name</label>
-        <input name="last_name" type="text" class="form-control" placeholder="Enter Last Name" required>
+        <label for="last_name">Last Name</label>
+        <input name="last_name" type="text" class="form-control" placeholder="Enter your last name" required>
       </div>
+
       <div class="form-group">
-        <label for="email_label">Email Address</label>
-        <input name="email" type="email" class="form-control" placeholder="Enter Email" required>
+        <label for="email">Email Address</label>
+        <input name="email" type="email" class="form-control" placeholder="Enter your email" required>
       </div>
+
       <div class="form-group">
-        <label for="password_label">Password</label>
-        <input name="password" type="password" class="form-control" placeholder="Enter Password" required>
+        <label for="password">Password</label>
+        <input name="password" type="password" class="form-control" placeholder="Choose a password" required>
       </div>
-        <br>
-      <button type="submit" class="btn btn-primary">Create Account</button>
+
+      <button type="submit" class="btn btn-signup">Create Account</button>
     </form>
   </div>
-
 </div>
-    <!-- Below code is using bootstrap to display a loading circle when needed -->
+
 <div class="d-none" id="loaderLanding">
   <div class="spinner-border" role="status">
     <span class="sr-only"></span>

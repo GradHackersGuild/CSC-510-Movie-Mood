@@ -89,28 +89,108 @@ function fetchPosterURL(imdbID) {
     return posterURL;
 }
 
+function fetchStreamingOptions(movieId, callback) {
+    // Step 1: Fetch the API key dynamically
+    fetchRapidAPIKey(function (err, apiKey) {
+        if (err) {
+            console.error("Could not fetch API key");
+            callback(err, null);
+            return;
+        }
+
+        const settings = {
+            async: true,
+            crossDomain: true,
+            url: `https://streaming-availability.p.rapidapi.com/shows/movie/${movieId}`,
+            method: "GET",
+            headers: {
+                "x-rapidapi-key": apiKey,
+                "x-rapidapi-host": "streaming-availability.p.rapidapi.com",
+            },
+        };
+
+        $.ajax(settings)
+            .done(function (response) {
+                if (response.streamingOptions && response.streamingOptions.us) {
+                    callback(null, response.streamingOptions.us);
+                } else {
+                    callback("No streaming options found", null);
+                }
+            })
+            .fail(function (error) {
+                console.error("Error fetching streaming options:", error);
+                callback(error, null);
+            });
+    });
+}
+
+// function fetchTrailerVideoID(movieTitle) {
+//     let videoID = null;
+//     $.ajax({
+//         type: "GET",
+//         url: "https://www.googleapis.com/youtube/v3/search",
+//         data: {
+//             part: "snippet",
+//             q: `${movieTitle} trailer`,
+//             type: "video",
+//             maxResults: 1,
+//             key: "AIzaSyDG5-CxJDSuJl7-NqvhnlhnjMIHvteS5l0",
+//         },
+//         async: false, // Keep this synchronous as in the original
+//         success: function (response) {
+//             if (response.items && response.items.length > 0) {
+//                 videoID = response.items[0].id.videoId;
+//             }
+//         },
+//         error: function (error) {
+//             console.log("Error fetching trailer video ID: " + error);
+//         },
+//     });
+//     return videoID;
+// }
+
 function fetchTrailerVideoID(movieTitle) {
     let videoID = null;
+
+    // Fetch API key from the server
     $.ajax({
         type: "GET",
-        url: "https://www.googleapis.com/youtube/v3/search",
-        data: {
-            part: "snippet",
-            q: `${movieTitle} trailer`,
-            type: "video",
-            maxResults: 1,
-            key: "AIzaSyDJXmRd4FFz8pyqsIKtIp_J6ZAlcAhG4qc",
-        },
-        async: false, // Keep this synchronous as in the original
-        success: function (response) {
-            if (response.items && response.items.length > 0) {
-                videoID = response.items[0].id.videoId;
+        url: "/get-youtube-api-key", // Server endpoint to get API key
+        async: false,
+        success: function (apiResponse) {
+            if (apiResponse.key) {
+                const apiKey = apiResponse.key;
+
+                // Fetch trailer video ID using the retrieved API key
+                $.ajax({
+                    type: "GET",
+                    url: "https://www.googleapis.com/youtube/v3/search",
+                    data: {
+                        part: "snippet",
+                        q: `${movieTitle} trailer`,
+                        type: "video",
+                        maxResults: 1,
+                        key: apiKey,
+                    },
+                    async: false,
+                    success: function (response) {
+                        if (response.items && response.items.length > 0) {
+                            videoID = response.items[0].id.videoId;
+                        }
+                    },
+                    error: function (error) {
+                        console.log("Error fetching trailer video ID: " + error);
+                    },
+                });
+            } else {
+                console.log("API key not found in the server response.");
             }
         },
         error: function (error) {
-            console.log("Error fetching trailer video ID: " + error);
+            console.log("Error fetching API key: " + error);
         },
     });
+
     return videoID;
 }
 
@@ -200,6 +280,21 @@ function handlePredictionSuccess(response) {
 
         // Create modal structure (hidden initially)
         createMovieModal(movie, index);
+        fetchStreamingOptions(movie.movieId, function (err, streamingOptions) {
+            const streamingContainer = document.getElementById(`streaming-container-${index}`);
+            if (streamingContainer) {
+                if (err) {
+                    streamingContainer.innerHTML = "<p>No streaming options available</p>";
+                } else {
+                    let optionsHTML = "<p>Streaming Options</p><ul>";
+                    streamingOptions.forEach(option => {
+                        optionsHTML += `<li><a href="${option.link}" target="_blank">${option.service.name} (${option.type})</a></li>`;
+                    });
+                    optionsHTML += "</ul>";
+                    streamingContainer.innerHTML = optionsHTML;
+                }
+            }
+        });
     });
 
     $("#loader").attr("class", "d-none");
@@ -218,6 +313,9 @@ function createMovieModal(movie, index) {
                         <!-- Trailer will be embedded here -->
                     </div>
                     <p class="movie-description">${movie.overview}</p>
+                    <div id="streaming-container-${index}" class="streaming-container">
+            <p>Loading streaming options...</p>
+          </div>
                     <div class="modal-actions">
                         <a href="https://www.imdb.com/title/${movie.imdb_id}" 
                            target="_blank" 
@@ -231,6 +329,9 @@ function createMovieModal(movie, index) {
                             data-bs-target="#reviewModal-${index}">
                             Write Review
                         </button>
+                        <button type="button" onclick="addTOWatchListClick('${movie.movieId}', '${movie.title}', '${movie.overview}', '${movie.poster_path}', '${movie.imdb_id}', '${movie.runtime}', '${index}')" id="addToWatchList-${index}" class="btn btn-primary modal-save">Add To Watchlist</button>
+
+                        
                     </div>
                 </div>
             </div>
@@ -427,3 +528,19 @@ window.modalOnClick = function (index) {
     // Add your review submission logic here
     $(`#closeModal-${index}`).click();
 };
+
+function fetchRapidAPIKey(callback) {
+    $.ajax({
+        type: "GET",
+        url: "/get-rapidapi-key",
+        success: function (response) {
+            callback(null, response.key);
+        },
+        error: function (error) {
+            console.error("Error fetching API key:", error);
+            callback(error, null);
+        }
+    });
+}
+
+

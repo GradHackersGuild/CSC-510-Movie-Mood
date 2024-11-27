@@ -43,6 +43,7 @@
 
             <div class="collapse navbar-collapse" id="navbarContent">
                 <div class="ms-auto d-flex align-items-center gap-2">
+                    {console.log(current_user)}
                     {% if current_user.is_authenticated %}
                     <span class="text-light me-3">Welcome {{ user }}!</span>
                     <a class="btn btn-success" href="{{ url_for('chat_page') }}">Chat Room</a>
@@ -50,6 +51,8 @@
                     <a class="btn btn-danger" href="{{ url_for('new_movies') }}">New Movies</a>
                     <a class="btn btn-success" href="{{ url_for('new_series') }}">Series</a>
                     <a class="btn btn-info" href="{{ url_for('celebrity') }}">Celebrity</a>
+                    <a class="btn btn-success" href="{{ url_for('my_watchlist') }}">My Watchlist</a>
+
 
                     {% if search is true %}
                     <a class="btn btn-primary" href="{{ url_for('profile_page') }}">Profile</a>

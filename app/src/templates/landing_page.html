@@ -1,27 +1,185 @@
 {% extends 'shared/layout.html' %}
 
 {% block maincontent %}
-<div class="container" style="margin-top: 60px;" id="centralDivLanding">
-  <div class="heading1"><br><br><br><br>
-    <h2><center>🎬 Movie Mood🍿: Get a Movie! 🎬</center></h2>
-    <p style="text-align: center; color: azure; font-size: 18px;"><br>
-    Discover personalized movie recommendations by selecting up to 5 of your favorite films.
-    <br>
-    Add reviews, get an insight on latest movies and see what others are watching!
-    <br>
-    Enjoy movies at your own pace, on your terms.
-    </p><br>
-    <a href="{{ url_for('login') }}" class="btn btn-primary mx-auto">Get Started!</a>
-    <div class="highlighted-section">
-      <p>Made with ❤️ by <a href="https://github.com/The-Powerpuff-Girls3/CSC-510-Movie-Mood" target="_blank"> Movie Mood</a></p>
-      <a href="https://github.com/The-Powerpuff-Girls3/CSC-510-Movie-Mood/blob/master/LICENSE" target="_blank">MIT License Copyright (c) 2024 Movie Mood</a>
+<style>
+  .hero-section {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .floating-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .shape {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 50%;
+    animation: float 15s infinite;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+
+    50% {
+      transform: translate(100px, 100px) rotate(180deg);
+    }
+
+    100% {
+      transform: translate(0, 0) rotate(360deg);
+    }
+  }
+
+  .content-wrapper {
+    position: relative;
+    z-index: 2;
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 4.5rem;
+    font-weight: 800;
+    background: linear-gradient(45deg, #60a5fa, #e879f9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 2rem;
+  }
+
+  .hero-description {
+    font-size: 1.25rem;
+    color: #94a3b8;
+    max-width: 700px;
+    margin: 0 auto 3rem;
+    line-height: 1.8;
+  }
+
+  .cta-button {
+    background: linear-gradient(45deg, #60a5fa, #e879f9);
+    color: white;
+    padding: 1rem 3rem;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: none;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 4px 15px rgba(96, 165, 250, 0.2);
+  }
+
+  .cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(96, 165, 250, 0.3);
+    color: white;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 4rem;
+  }
+
+  .feature-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+    color: whitesmoke;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .feature-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 2rem;
+    color: #94a3b8;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(10px);
+  }
+
+  .footer a {
+    color: #60a5fa;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer a:hover {
+    color: #e879f9;
+  }
+</style>
+
+<div class="hero-section">
+  <div class="floating-shapes">
+    <div class="shape" style="width: 100px; height: 100px; top: 10%; left: 10%;"></div>
+    <div class="shape" style="width: 150px; height: 150px; top: 60%; left: 80%;"></div>
+    <div class="shape" style="width: 80px; height: 80px; top: 30%; left: 50%;"></div>
+  </div>
+
+  <div class="content-wrapper">
+    <h1 class="hero-title">
+      <span class="hero-emoji">🎬</span>
+      Movie Mood
+      <span class="hero-emoji">🍿</span>
+    </h1>
+
+    <div class="hero-description">
+      <p>Discover personalized movie recommendations by selecting your favorite films. Add reviews, get insights on
+        latest movies, and see what others are watching!</p>
+    </div>
+
+    <a href="{{ url_for('login') }}" class="cta-button">Get Started!</a>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Personalized Picks</h3>
+        <p>Get movie recommendations tailored to your taste</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">✍️</div>
+        <h3>Share Reviews</h3>
+        <p>Write and read reviews from other movie enthusiasts</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🎥</div>
+        <h3>Watch Trailers</h3>
+        <p>Preview movies with integrated trailer viewing</p>
+      </div>
     </div>
   </div>
+
+  <footer class="footer">
+    <p>Made with ❤️ by <a href="https://github.com/The-Powerpuff-Girls3/CSC-510-Movie-Mood" target="_blank">Movie
+        Mood</a></p>
+    <a href="https://github.com/The-Powerpuff-Girls3/CSC-510-Movie-Mood/blob/master/LICENSE" target="_blank">MIT License
+      Copyright (c) 2024 Movie Mood</a>
+  </footer>
 </div>
+
 <div class="d-none" id="loaderLanding">
   <div class="spinner-border" role="status">
     <span class="sr-only"></span>
   </div>
 </div>
 {% endblock %}
-
