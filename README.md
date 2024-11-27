@@ -45,8 +45,13 @@
 You can see the project presentation at - [YouTube link]
 
 ## Project Description
+**Movie Mood** is a personalized movie recommendation platform that matches suggestions to your mood, eliminating endless scrolling. Powered by an advanced **Mood-Based Recommendation Algorithm**, it brings the perfect movie to your screen instantly.  
 
-Movie Mood is a personalized movie recommendation platform that curates a list of 10 movies based on your emotional state. Users can select their current mood, and our algorithm suggests movies that align with that mood. The platform also allows you to provide feedback—Liked, Disliked, or Neutral—which helps refine future recommendations. Users can also write reviews, share them, and see what others are watching and reviewing. For more details on the system architecture and user flow, please refer to our [wiki page](https://github.com/The-Powerpuff-Girls3/CSC-510-Movie-Mood/wiki/Project-Wiki).
+Key features include **watchlist management**, one-click access to streaming options, and instant trailers, simplifying the movie discovery process. Movie Mood fosters community engagement with **dynamic chat rooms**, an **interactive review system**, and **shareable lists**, creating a space for collaboration and discussions among movie enthusiasts.  
+
+With a user-friendly interface, enhanced profiles, and reliable performance backed by **50 test cases** and **98% code coverage**, Movie Mood offers a seamless experience.  
+
+Whether you're looking for tailored recommendations, community interaction, or efficient discovery tools, Movie Mood transforms your movie nights into a curated cinematic journey. Let Movie Mood redefine how you explore and enjoy movies!
 
 ## Core Applications of the Project
 
