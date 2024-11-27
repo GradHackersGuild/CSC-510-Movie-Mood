@@ -58,7 +58,7 @@ Whether you're looking for tailored recommendations, community interaction, or e
 ![image](https://github.com/user-attachments/assets/04ff74f4-1975-4c80-a9bd-da0c38a99d3b)
 
 2. Embedded youtube trailer 
-![image](https://github.com/user-attachments/assets/9ac68da9-cba6-4bf7-9de8-cb23c7e38827)
+![image](https://github.com/user-attachments/assets/898a1824-0945-4f68-a4ad-68fc13c79452)
 
 3. Reimplemented recommendation screen 
 ![image](https://github.com/user-attachments/assets/ff4040ce-578d-45bc-8689-998d8977b2db)
