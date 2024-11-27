@@ -34,13 +34,11 @@
 
 **Movie Mood: Match your mood with the perfect movie!**
 
-- **Pravite:** Share your feelings with invited users. 
-- **Efficient:** Quick, tailored recommendations to match your current mood. 
-- **Adaptable:** Suggestions shift based on your feedback and feelings.
-- **Accessible:** Works seamlessly across different platforms.
-- **Engaging:** Discover movies that reflect your emotional state.
-- **Interactive:** Chat about your recommendations with friends or the Movie Mood community.
-- **Simple:** Easy installation and setup – start exploring mood-based movie recommendations instantly!
+- **Tailored Recommendations for Your Mood:** Unique Mood-Based Recommendation Algorithm ensures every movie suggestion aligns with how you're feeling, making your viewing experience truly personal.
+- **Seamless Watchlist Management:** Create Watchlists for saving intriguing recommendations, ensuring you never miss a must-watch movie.
+- **One-Click Streaming Options:** Instantly check which streaming services offer your recommended movies, saving you time and effort.
+- **Instant Access to Trailers:** Watch YouTube trailers for recommended movies directly on the platform, so you can decide what to watch without leaving the site.
+- **Simplified Discovery Process:** Say goodbye to endless scrolling on streaming platforms. Let Movie Mood intelligently guide you to the perfect movie for your mood.
 
 ## Project Presentation Video
 
