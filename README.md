@@ -1,7 +1,5 @@
 # <i> Movie Mood🍿: Movie Recommendations for your Personal Feeling </i>
 
-# [Check our Wiki Page for detailed information about the project!](https://github.com/The-Powerpuff-Girls3/CSC-510-Movie-Mood/wiki/Project-Wiki)
-
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://gitHub.com/The-Powerpuff-Girls3/CSC-510-Movie-Mood/graphs/commit-activity)
 [![Contributors Activity](https://img.shields.io/github/commit-activity/m/GradHackersGuild/CSC-510-Movie-Mood)](https://github.com/GradHackersGuild/CSC-510-Movie-Mood/pulse)
 [![GitHub issues](https://img.shields.io/github/issues/GradHackersGuild/CSC-510-Movie-Mood.svg)](https://github.com/GradHackersGuild/CSC-510-Movie-Mood/issues?q=is%3Aopen+is%3Aissue)
@@ -25,38 +23,6 @@
 
 ![Home page](https://github.com/The-Powerpuff-Girls3/CSC-510-Movie-Mood/blob/master/asset/readme_main.png)
 <b>Movie Mood is an invitation to explore the boundless realms of cinema. With a constantly expanding library of films, an intuitive recommendation algorithm, a vibrant new chat room, a seamless account system, and a robust review platform, PopcornPicks transforms the way you discover, enjoy, and engage with movies. It’s a gateway to unforgettable cinematic adventures.</b>
-
-# Contents
-
-- [ Movie Mood🍿: Movie Recommendations for your Personal Feeling ](#-movie-mood-movie-recommendations-for-your-personal-feeling-)
-- [Check our Wiki Page for detailed information about the project!](#check-our-wiki-page-for-detailed-information-about-the-project)
-- [Contents](#contents)
-  - [Why use Movie Mood?](#why-use-movie-mood)
-  - [Project Presentation Video](#project-presentation-video)
-  - [Project Description](#project-description)
-  - [Core Applications of the Project](#core-applications-of-the-project)
-    - [Engaging in NEW Interactive UI](#engaging-in-new-interactive-ui)
-    - [User Authentication](#user-authentication)
-      - [Sign up: Users can register to Movie Mood for personalized recommendations based on their emotional state.](#sign-up-users-can-register-to-movie-mood-for-personalized-recommendations-based-on-their-emotional-state)
-      - [Login:](#login)
-    - [MovieSphere](#moviesphere)
-      - [Personalized Profile Page for Users](#personalized-profile-page-for-users)
-      - [Check Out New and Upcoming Movies](#check-out-new-and-upcoming-movies)
-      - [Movie Recommendation Mechanism](#movie-recommendation-mechanism)
-      - [Write Movie Reviews](#write-movie-reviews)
-    - [User Interaction](#user-interaction)
-      - [See What Others Have Seen](#see-what-others-have-seen)
-      - [Chat Room](#chat-room)
-    - [❤️Based on preivous project, we added two new UI tabs!❤️](#️based-on-preivous-project-we-added-two-new-ui-tabs️)
-      - [today's series](#todays-series)
-      - [celebrity](#celebrity)
-  - [Tech stack Used👨‍💻:](#tech-stack-used)
-  - [Getting Started](#getting-started)
-  - [Future Scope](#future-scope)
-  - [Contribute to the Project!](#contribute-to-the-project)
-  - [Contributors](#contributors)
-  - [Contact Us](#contact-us)
-  - [License](#license)
 
 ## Why use Movie Mood?
 
@@ -151,7 +117,7 @@ Right now, users can enjoy more content from our website!!!
 
 Step 1:
 Git Clone the Repository:
-    git clone https://github.com/The-Powerpuff-Girls3/CSC-510-Movie-Mood.git
+    git clone https://github.com/GradHackersGuild/CSC-510-Movie-Mood
 
 Step 2:
 Install the required packages:
@@ -170,11 +136,12 @@ Step 4:
 Create a .env file:
      # .env
      TMDB_API_KEY=YOUR_TMDB_API_KEY
+     YOUTUBE_API_KEY=YOUR_YOUTUBE_DATA_V3_API_KEY
+     RAPIDAPI_KEY=YOUR_RAPIDAPI_KEY
      
 Step 5:
 Run the following commands:
     cd app
-    python init_db.py
     python run.py
     
 Step 6:
@@ -202,22 +169,12 @@ Please refer to the [CONTRIBUTING.md](https://github.com/The-Powerpuff-Girls3/CS
 
 ## Contributors
 
-[Hua Yang](https://github.com/HuaYangttt)
-[Yinan Wu](https://github.com/YinanWusoymilk)
-[Xuntao Lyu](https://github.com/lvxuntao)
+[Makarand Pundlik](https://github.com/MakarandPundlik)
+[Varun Varathrajan](https://github.com/V4run14)
+[Michelle Varghese](https://github.com/michellevarghese)
 
-Channel of group communication
-We mainly use wechat group to communicate!
-![Alt text](data/channel%20evidence.jpg)
+## Channel of group communication 
 
-
-## Contact Us
-
-If you have any concerns or questions related to Movie Mood, feel free to reach out to us at moviemoodhelpgmailcom@googlegroups.com.
-
-## deprecation
-
-we will give deprecation infomation here. 
 
 ## License
 
