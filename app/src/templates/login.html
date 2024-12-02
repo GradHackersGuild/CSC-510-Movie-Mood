@@ -2,6 +2,108 @@
 
 {% block extracss %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+<style>
+  .login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1e2024 0%, #18181d 100%);
+  }
+
+  .login-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 3rem;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .login-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .login-header h2 {
+    color: #ffffff;
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .login-header .emoji {
+    font-size: 2.5rem;
+    margin: 0 0.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group label {
+    color: #ffffff;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .form-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 0.8rem 1rem;
+    color: #ffffff;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: none;
+  }
+
+  .btn-login {
+    background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+    border: none;
+    border-radius: 10px;
+    padding: 0.8rem;
+    width: 100%;
+    color: #ffffff;
+    font-weight: 600;
+    transition: transform 0.3s ease;
+  }
+
+  .btn-login:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(45deg, #ff8e8e, #ff6b6b);
+  }
+
+  .signup-text {
+    text-align: center;
+    color: #ffffff;
+    margin-top: 1.5rem;
+  }
+
+  .signup-text a {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .signup-text a:hover {
+    color: #ff8e8e;
+  }
+
+  .alert {
+    background: rgba(220, 53, 69, 0.1);
+    border: 1px solid rgba(220, 53, 69, 0.2);
+    color: #ff6b6b;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+  }
+</style>
 {% endblock %}
 
 {% block extrajs %}
@@ -9,32 +111,40 @@
 {% endblock %}
 
 {% block maincontent %}
-<div class="container" style="margin-top: 60px;" id="centralDivLanding">
-  <div class="heading1"><br><br><br><br>
-    <h2><center>🎬 Movie Mood🍿: Login to Your Account! 🎬</center></h2>
-    <br>
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <span class="emoji">🎬</span>
+      <h2>Movie Mood</h2>
+      <span class="emoji">🍿</span>
+    </div>
+
     {% if show_message %}
-      <div class="alert alert-danger" role="alert">
-          {{ message }}
-      </div>
+    <div class="alert" role="alert">
+      {{ message }}
+    </div>
     {% endif %}
+
     <form id="login-form" action="" method="POST">
       <div class="form-group">
-        <label for="username_label">Username</label>
-        <input name="username" type="username" class="form-control" placeholder="Enter Username" required>
+        <label for="username">Username</label>
+        <input name="username" type="username" class="form-control" placeholder="Enter your username" required>
       </div>
-        <br>
+
       <div class="form-group">
-        <label for="password_label">Password</label>
-        <input name="password" type="password" class="form-control" placeholder="Enter Password" required>
+        <label for="password">Password</label>
+        <input name="password" type="password" class="form-control" placeholder="Enter your password" required>
       </div>
-        <br>
-      <button type="submit" class="btn btn-primary">Login</button>
+
+      <button type="submit" class="btn btn-login">Sign In</button>
     </form>
-      <p id="Signup_text" class="form-text">Don't have an account with us? Click <a href="{{ url_for('signup') }}">here</a> to sign up.</p>
-  </div>
+
+    <p class="signup-text">
+      Don't have an account? <a href="{{ url_for('signup') }}">Sign up</a>
+    </p>
   </div>
 </div>
+
 <div class="d-none" id="loaderLanding">
   <div class="spinner-border" role="status">
     <span class="sr-only"></span>

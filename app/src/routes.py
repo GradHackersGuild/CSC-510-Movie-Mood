@@ -24,6 +24,7 @@ app_dir = os.path.dirname(os.path.abspath(__file__))
 code_dir = os.path.dirname(app_dir)
 project_dir = os.path.dirname(code_dir)
 
+
 @app.route("/", methods={"GET"})
 @app.route("/home", methods={"GET"})
 def landing_page():
@@ -33,6 +34,7 @@ def landing_page():
     if current_user.is_authenticated:
         return redirect(url_for('search_page'))
     return render_template("landing_page.html")
+
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -51,7 +53,8 @@ def signup():
             last_name = request.form['last_name']
             email = request.form['email']
             password = request.form['password']
-            hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+            hashed_password = bcrypt.generate_password_hash(
+                password).decode('utf-8')
             user = User(username=username, email=email, first_name=first_name,
                         last_name=last_name, password=hashed_password)
             db.session.add(user)
@@ -61,16 +64,17 @@ def signup():
         # For GET method
         return render_template('signup.html')
     # If user already exists
-    #pylint: disable=broad-except
+    # pylint: disable=broad-except
     except Exception as e:
         print(f"Error is {e}")
         message = f"Username {username} already exists!"
         return render_template('signup.html', message=message, show_message=True)
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """
-        Login Page Flow 
+        Login Page Flow
     """
     try:
         # If user has already logged in earlier and has an active session
@@ -90,11 +94,12 @@ def login():
             return render_template("login.html", message=message, show_message=True)
         # When the login page is hit
         return render_template("login.html")
-    #pylint: disable=broad-except
+    # pylint: disable=broad-except
     except Exception as e:
         print(f"Error is {e}")
         message = "Invalid Credentials! Try again!"
         return render_template('login.html', message=message, show_message=True)
+
 
 @app.route('/logout')
 def logout():
@@ -103,6 +108,7 @@ def logout():
     """
     logout_user()
     return redirect('/')
+
 
 @app.route("/profile_page", methods=["GET"])
 @login_required
@@ -117,16 +123,15 @@ def profile_page():
         trailer_id = get_trailer_video_id(movie_object.title, yt_api_key)
         movie_object = Movie.query.filter_by(movieId=review.movieId).first()
         obj = {
-            "movieId": movie_object.movieId,
-            "title" : movie_object.title,
-            "runtime" : movie_object.runtime,
-            "overview" : movie_object.overview,
-            "genres" : movie_object.genres,
-            "imdb_id" : movie_object.imdb_id,
-            "review_text" : review.review_text,
-            "trailer_id" : trailer_id
+            "title": movie_object.title,
+            "runtime": movie_object.runtime,
+            "overview": movie_object.overview,
+            "genres": movie_object.genres,
+            "imdb_id": movie_object.imdb_id,
+            "review_text": review.review_text,
+            "trailer_id": trailer_id
         }
-        #print(trailer_id)
+        print(trailer_id)
         reviews.append(obj)
     return render_template("profile.html", user=current_user, reviews=reviews, search=False)
 
@@ -139,6 +144,7 @@ def search_page():
     if current_user.is_authenticated:
         return render_template("search.html", user=current_user, search=True)
     return redirect(url_for('landing_page'))
+
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -156,18 +162,20 @@ def predict():
     data = data.to_json(orient="records")
     return jsonify(data)
 
+
 @app.route("/search", methods=["POST"])
 def search():
     """
         Handles movie search requests.
     """
+    print("HELOO")
     term = request.form["q"]
     finder = Search()
-    # finder.get_movie_from_tmdb(term)
     filtered_dict = finder.results_top_ten(term)
     resp = jsonify(filtered_dict)
     resp.status_code = 200
     return resp
+
 
 @app.route("/chat", methods=["GET"])
 def chat_page():
@@ -178,6 +186,7 @@ def chat_page():
         return render_template("movie_chat.html", user=current_user)
     return redirect(url_for('landing_page'))
 
+
 @socket.on('connections')
 def show_connection(data):
     """
@@ -185,12 +194,15 @@ def show_connection(data):
     """
     print('received message: ' + data)
 
+
 @socket.on('message')
 def broadcast_message(data):
     """
         Distributes messages sent to the server to all clients in real time
     """
-    emit('message', {'username': data['username'], 'msg': data['msg']}, broadcast=True)
+    emit('message', {'username': data['username'],
+         'msg': data['msg']}, broadcast=True)
+
 
 @app.route("/getPosterURL", methods=["GET"])
 def get_poster_url():
@@ -202,13 +214,14 @@ def get_poster_url():
     poster_url = fetch_poster_url(imdb_id)
     return jsonify({"posterURL": poster_url})
 
+
 def fetch_poster_url(imdb_id):
     """
     Fetch the poster URL for a movie from The Movie Database (TMDB) API.
     """
     timeout = 100
     url = f"https://api.themoviedb.org/3/find/{imdb_id}?"\
-    f"api_key={TMDB_API_KEY}&external_source=imdb_id"
+        f"api_key={TMDB_API_KEY}&external_source=imdb_id"
     response = requests.get(url, timeout=timeout)
     data = response.json()
     # Check if movie results are present and have a poster path
@@ -216,6 +229,7 @@ def fetch_poster_url(imdb_id):
         poster_path = data["movie_results"][0].get("poster_path")
         return f"https://image.tmdb.org/t/p/w500{poster_path}" if poster_path else None
     return None
+
 
 def get_trailer_video_id(movie_name, api_key):
     """
@@ -242,6 +256,7 @@ def get_trailer_video_id(movie_name, api_key):
         return results["items"][0]["id"]["videoId"]
     return None
 
+
 @app.route("/postReview", methods=["POST"])
 @login_required
 def post_review():
@@ -253,6 +268,7 @@ def post_review():
     # If it does not, save the movie details and save the review
 
     data = json.loads(request.data)
+    print("hello i am data", data)
     user_object = User.query.filter_by(username=current_user.username).first()
     user_id = user_object.id
     review_text = data['review_text']
@@ -261,24 +277,25 @@ def post_review():
     if movie_object is None:
         # Create a new movie object
         movie = Movie(
-            movieId = movie_id,
-            title = data['title'],
-            runtime = data['runtime'],
-            overview = data['overview'],
-            genres = data['genres'],
-            imdb_id = data['imdb_id'],
-            poster_path = data['poster_path']
+            movieId=movie_id,
+            title=data['title'],
+            runtime=data['runtime'],
+            overview=data['overview'],
+            genres=data['genres'],
+            imdb_id=data['imdb_id'],
+            poster_path=data['poster_path']
         )
         db.session.add(movie)
         db.session.commit()
     review = Review(
-        review_text = review_text,
-        movieId = movie_id,
-        user_id = user_id
+        review_text=review_text,
+        movieId=movie_id,
+        user_id=user_id
     )
     db.session.add(review)
     db.session.commit()
     return jsonify({"success": "success"})
+
 
 @app.route("/movies", methods=["GET"])
 @login_required
@@ -287,21 +304,22 @@ def movie_page():
         Get movies and their reviews
     """
     yt_api_key = os.getenv("YOUTUBE_API_KEY")
+    print(yt_api_key)
     movies_ojbects = Movie.query.all()
     movies = []
     for movie_object in movies_ojbects:
         reviews = []
         trailer_id = get_trailer_video_id(movie_object.title, yt_api_key)
-        print(trailer_id)
         obj1 = {
-            "title" : movie_object.title,
-            "runtime" : movie_object.runtime,
-            "overview" : movie_object.overview,
-            "genres" : movie_object.genres,
-            "imdb_id" : movie_object.imdb_id,
-            "trailer_id" : trailer_id
+            "title": movie_object.title,
+            "runtime": movie_object.runtime,
+            "overview": movie_object.overview,
+            "genres": movie_object.genres,
+            "imdb_id": movie_object.imdb_id,
+            "trailer_id": trailer_id
         }
-        reviews_objects = Review.query.filter_by(movieId = movie_object.movieId).all()
+        reviews_objects = Review.query.filter_by(
+            movieId=movie_object.movieId).all()
         for review_object in reviews_objects:
             user = User.query.filter_by(id=review_object.user_id).first()
             obj2 = {
@@ -313,6 +331,7 @@ def movie_page():
         obj1["reviews"] = reviews
         movies.append(obj1)
     return render_template("movie.html", movies=movies, user=current_user)
+
 
 @app.route('/new_movies', methods=["GET"])
 @login_required
@@ -331,7 +350,7 @@ def new_movies():
         'page': 1  # You may want to paginate the results if there are many
     }
     try:
-    # Make the request to TMDb API
+        # Make the request to TMDb API
         response = requests.get(endpoint, params=params, timeout=10)
     except (requests.exceptions.HTTPError,
             requests.exceptions.ConnectionError,
@@ -339,7 +358,7 @@ def new_movies():
             requests.exceptions.RequestException
             ) as e:
         return render_template('new_movies.html', show_message=True,
-                           message=e)
+                               message=e)
     if response.status_code == 200:
         # Parse the JSON response
         movie_data = response.json().get('results', [])
@@ -347,6 +366,7 @@ def new_movies():
         return render_template('new_movies.html', movies=movie_data, user=current_user)
     return render_template('new_movies.html', show_message=True,
                            message='Error fetching movie data')
+
 
 @app.route('/celebrity', methods=["GET"])
 @login_required
@@ -374,20 +394,24 @@ def celebrity():
         # Parse the JSON response
         people_data = response.json().get('results', [])
         # Sort by popularity in descending order
-        sorted_people = sorted(people_data, key=lambda x: x['popularity'], reverse=True)
+        sorted_people = sorted(
+            people_data, key=lambda x: x['popularity'], reverse=True)
 
         # Fetch additional details for each person
         for person in sorted_people:
             person_id = person['id']
             # pylint: disable=line-too-long
-            details_response = requests.get(f'https://api.themoviedb.org/3/person/{person_id}?api_key={tmdb_api_key}&language=en-US', timeout=20)
+            details_response = requests.get(
+                f'https://api.themoviedb.org/3/person/{person_id}?api_key={tmdb_api_key}&language=en-US', timeout=20)
             if details_response.status_code == 200:
                 # pylint: disable=line-too-long
-                person['biography'] = details_response.json().get('biography', 'No biography available.')
+                person['biography'] = details_response.json().get(
+                    'biography', 'No biography available.')
 
         return render_template('celebrity.html', people=sorted_people, user=current_user)
     # pylint: disable=line-too-long
     return render_template('celebrity.html', show_message=True, message='Error fetching people data')
+
 
 @app.route('/new_series', methods=["GET"])
 @login_required
@@ -423,7 +447,8 @@ def new_series():
     return render_template('new_series.html', show_message=True,
                            message='Error fetching series data')
 
-@app.route("/add_to_watchlist",methods=["POST"])
+
+@app.route("/add_to_watchlist", methods=["POST"])
 @login_required
 def add_to_watchlist():
     """
@@ -431,53 +456,74 @@ def add_to_watchlist():
     """
     try:
         data = json.loads(request.data)
-        user_id = User.query.filter_by(username=current_user.username).first().id
+        user_id = User.query.filter_by(
+            username=current_user.username).first().id
         poster_path = f"https://image.tmdb.org/t/p/w500{data['poster_path']}"
         # pylint: disable=line-too-long
-        next_watch = Watchlist(user_id=user_id,movieId=data['movieId'],title=data['title'],overview=data['overview'],poster_path=poster_path,runtime=data['runtime'],imdb_id=data['imdb_id'])
+        next_watch = Watchlist(user_id=user_id, movieId=data['movieId'], title=data['title'],
+                               overview=data['overview'], poster_path=poster_path, runtime=data['runtime'], imdb_id=data['imdb_id'])
         db.session.add(next_watch)
         db.session.commit()
         return jsonify({"success": True})
     # pylint: disable=broad-except
     except Exception as e:
         print(e)
-        return jsonify({"success": False,"error":e})
+        return jsonify({"success": False, "error": e})
 
-@app.route("/my_watchlist",methods=["GET"])
+
+@app.route("/my_watchlist", methods=["GET"])
 @login_required
 def my_watchlist():
     """
         method to get movies from watchlist
     """
     try:
-        user_id = User.query.filter_by(username=current_user.username).first().id
+        user_id = User.query.filter_by(
+            username=current_user.username).first().id
         watchlist = Watchlist.query.filter_by(user_id=user_id).all()
         watchlist_json = [item.to_dict() for item in watchlist]
-        #now fetch movie details, like poster and all
-        return render_template('watchlist.html',movies=watchlist_json)
+        # now fetch movie details, like poster and all
+        return render_template('watchlist.html', movies=watchlist_json)
     # pylint: disable=broad-except
     except Exception as e:
-        print('Error occurred',e)
-        return render_template('watchlist.html',show_message=True,message=e)
+        print('Error occurred', e)
+        return render_template('watchlist.html', show_message=True, message=e)
 
-@app.route("/remove_from_watchlist",methods=["POST"])
-@login_required
+
+@app.route("/remove_from_watchlist", methods=["POST"])
+# @login_required
 def remove_from_watchlist():
     """
         method to delete a movie from watchlist
     """
+    print("hello i am remove from watchlist", current_user)
     try:
         data = json.loads(request.data)
-        user_id = User.query.filter_by(username=current_user.username).first().id
+        user_id = User.query.filter_by(
+            username=current_user.username).first().id
         # pylint: disable=line-too-long
-        watchlist_entry = Watchlist.query.filter_by(user_id=user_id, movieId=data['movieId']).first()
-        db.session.delete(watchlist_entry)
-        db.session.commit()
-        return my_watchlist()
+        # watchlist_entry = Watchlist.query.filter_by(
+        #     user_id=user_id, movieId=data['movieId']).first()
+        # db.session.delete(watchlist_entry)
+        # db.session.commit()
+        # return my_watchlist()
+        print(
+            f"Attempting to delete movieId {data['movieId']} for userId {user_id}")
+        watchlist_entry = Watchlist.query.filter_by(
+            user_id=user_id, movieId=data['movieId']).first()
+        if watchlist_entry:
+            db.session.delete(watchlist_entry)
+            db.session.commit()
+            print(f"Deleted movieId {data['movieId']} from watchlist")
+            return my_watchlist()
+        else:
+            print(
+                f"No entry found for movieId {data['movieId']} and userId {user_id}")
+            return jsonify({"success": False, "error": "Entry not found"}), 404
     # pylint: disable=broad-except
     except Exception as e:
-        print('Error occurred',e)
-        return render_template('watchlist.html',show_message=True,message=e)
+        print('Error occurred', e)
+        return render_template('watchlist.html', show_message=True, message=e)
 
 @app.route('/get-youtube-api-key', methods=['GET'])
 def get_api_key():
@@ -489,41 +535,45 @@ def get_api_key():
         return jsonify({"key": api_key}), 200
     return jsonify({"error": "API key not found"}), 404
 
+
+def format_movie_name(self, movie):
+    """
+    Function to format movie name
+    """
+    return movie.replace(" ", "%20")
+
+def get_movie_from_tmdb(self,query):
+        """
+        function to get movie from imdb
+        """
+        tmdb_api_key = os.getenv("TMDB_API_KEY")
+        timeout = 100
+        # movie = self.format_movie_name(query)
+        url = f"https://api.themoviedb.org/3/search/movie?query={self.format_movie_name(query)}&page=1&api_key={tmdb_api_key}&language=en-US"
+        response = requests.get(url, timeout=timeout)
+        data = response.json()
+
+
+@app.route('/search_movie', methods=["GET"])
+def search_movie():
+    try:
+        movie_name = request.args.get("movie_name")
+        # format the name
+        fomatted_movie = format_movie_name(movie_name)
+        url = f"https://api.themoviedb.org/3/search/movie?query={fomatted_movie}&page=1&api_key={TMDB_API_KEY}&language=en-US"
+        # call tmdb APi
+        response = requests.get(url, timeout=100)
+        # return the result
+        print(response, '-----------------')
+        render_template("movie.html")
+    except:
+        print('There was an error')
+
+
 @app.route('/get-rapidapi-key', methods=['GET'])
 def get_rapidapi_key():
     """
         Sending API key to client
     """
-    api_key = os.getenv("RAPIDAPI_KEY")
-    return {"key": api_key}
-
-def format_movie_name(movie):
-    """
-    Function to format movie name
-    """
-    movie = movie.strip()
-    return movie.replace(" ", "%20")
-
-@app.route('/search_movie',methods=["GET"])
-def search_movie():
-    """
-    function to search movie with titles
-    """
-    try:
-        movie_name = request.args.get("movie_name")
-        if movie_name:
-            #format the name
-            fomatted_movie = format_movie_name(movie_name)
-            # pylint: disable=line-too-long
-            url = f"https://api.themoviedb.org/3/search/movie?query={fomatted_movie}&page=1&api_key={TMDB_API_KEY}&language=en-US"
-            #call tmdb APi
-            response = requests.get(url, timeout=100)
-            #return the result
-            movies = response.json()
-            print(movies['results'][:10],'-----------')
-            return movies['results'][:10]
-        return []
-    # pylint: disable=broad-except
-    except Exception as e:
-        print('There was an error',e)
-        return render_template("movie.html",show_message=True)
+    RAPIDAPI_KEY = os.getenv("RAPIDAPI_KEY")
+    return {"key": RAPIDAPI_KEY}
