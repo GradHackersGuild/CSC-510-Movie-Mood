@@ -66,11 +66,11 @@ class Search:
         """
         return self.results(word)[:10]
 
-    def format_movie_name(self,movie):
+    def format_movie_name(self, movie):
         """
         Function to format movie name
         """
         return movie.replace(" ", "%20")
 
-#if __name__ == "__main__":
+# if __name__ == "__main__":
 #    app.run()
