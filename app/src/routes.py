@@ -168,7 +168,6 @@ def search():
     """
         Handles movie search requests.
     """
-    print("HELOO")
     term = request.form["q"]
     finder = Search()
     filtered_dict = finder.results_top_ten(term)
@@ -490,40 +489,24 @@ def my_watchlist():
         return render_template('watchlist.html', show_message=True, message=e)
 
 
-@app.route("/remove_from_watchlist", methods=["POST"])
-# @login_required
+@app.route("/remove_from_watchlist",methods=["POST"])
+@login_required
 def remove_from_watchlist():
     """
         method to delete a movie from watchlist
     """
-    print("hello i am remove from watchlist", current_user)
     try:
         data = json.loads(request.data)
-        user_id = User.query.filter_by(
-            username=current_user.username).first().id
+        user_id = User.query.filter_by(username=current_user.username).first().id
         # pylint: disable=line-too-long
-        # watchlist_entry = Watchlist.query.filter_by(
-        #     user_id=user_id, movieId=data['movieId']).first()
-        # db.session.delete(watchlist_entry)
-        # db.session.commit()
-        # return my_watchlist()
-        print(
-            f"Attempting to delete movieId {data['movieId']} for userId {user_id}")
-        watchlist_entry = Watchlist.query.filter_by(
-            user_id=user_id, movieId=data['movieId']).first()
-        if watchlist_entry:
-            db.session.delete(watchlist_entry)
-            db.session.commit()
-            print(f"Deleted movieId {data['movieId']} from watchlist")
-            return my_watchlist()
-        else:
-            print(
-                f"No entry found for movieId {data['movieId']} and userId {user_id}")
-            return jsonify({"success": False, "error": "Entry not found"}), 404
+        watchlist_entry = Watchlist.query.filter_by(user_id=user_id, movieId=data['movieId']).first()
+        db.session.delete(watchlist_entry)
+        db.session.commit()
+        return my_watchlist()
     # pylint: disable=broad-except
     except Exception as e:
-        print('Error occurred', e)
-        return render_template('watchlist.html', show_message=True, message=e)
+        print('Error occurred',e)
+        return render_template('watchlist.html',show_message=True,message=e)
 
 @app.route('/get-youtube-api-key', methods=['GET'])
 def get_api_key():
@@ -537,34 +520,15 @@ def get_api_key():
 
 
 def format_movie_name(movie):
-    """Function to format movie name"""
+    """
+    Function to format movie name
+    """
     return movie.replace(" ", "%20")
-
-def get_movie_from_tmdb(query):
-    """Function to get movie from TMDB"""
-    tmdb_api_key = os.getenv("TMDB_API_KEY")
-    timeout = 100
-    url = f"https://api.themoviedb.org/3/search/movie?query={format_movie_name(query)}&page=1&api_key={tmdb_api_key}&language=en-US"
-    response = requests.get(url, timeout=timeout)
-    return response.json()
-
-
-@app.route('/search_movie', methods=["GET"])
-def search_movie():
-    """Handle movie search requests"""
-    try:
-        movie_name = request.args.get("movie_name")
-        formatted_movie = format_movie_name(movie_name)
-        url = f"https://api.themoviedb.org/3/search/movie?query={formatted_movie}&page=1&api_key={TMDB_API_KEY}&language=en-US"
-        response = requests.get(url, timeout=100)
-        return render_template("movie.html", response=response.json())
-    except Exception as e:
-        print(f'There was an error: {e}')
-        return render_template("error.html", error=str(e))
-
 
 @app.route('/get-rapidapi-key', methods=['GET'])
 def get_rapidapi_key():
-    """Send RapidAPI key to client"""
-    rapidapi_key = os.getenv("RAPIDAPI_KEY")
-    return {"key": rapidapi_key}
+    """
+        Sending API key to client
+    """
+    api_key = os.getenv("RAPIDAPI_KEY")
+    return {"key": api_key}
