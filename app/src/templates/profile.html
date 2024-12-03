@@ -1,15 +1,11 @@
 {% extends 'shared/layout.html' %}
 
 {% block extracss %}
-  <link
-    rel="stylesheet"
-    type="text/css"
-    href="{{ url_for('static', filename='css/profile.css') }}"
-  />
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/profile.css') }}" />
 {% endblock %}
 
 {% block extrajs %}
-  <script src="{{ url_for('static', filename='js/profile.js') }}"></script>  
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
 {% endblock %}
 
 
@@ -18,7 +14,9 @@
   <div class="row">
     <div class="col-md-12 heading1 pt-2">
       <!-- Heading for picking a movie -->
-      <h2><center>{{ user}}'s Profile Page</center></h2>
+      <h2>
+        <center>{{ user}}'s Profile Page</center>
+      </h2>
       <h6 class="tipHeader">✨Your personalised profile page!✨</h6>
     </div>
     <div class="col-md-12">
@@ -46,7 +44,7 @@
       <div class="row">
         {% for review in reviews %}
         {%
-          set imdb_link = "https://www.imdb.com/title/" + review.imdb_id
+        set imdb_link = "https://www.imdb.com/title/" + review.imdb_id
         %}
         <div class="col-sm-12">
           <div class="card movie-card">
@@ -57,26 +55,25 @@
                   <h6 class="card-subtitle mb-2 text-muted">{{review.runtime}} minutes</h6>
                   <p class="card-text"><strong>Movie Overview : </strong> {{review.overview}}</p>
                   <p class="card-text"><strong>Your Review : </strong>{{review.review_text}}</p>
-                  <iframe width="560" height="315" 
-                      src="https://www.youtube.com/embed/{{ movie.trailer_id }}" 
-                      frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowfullscreen>
-                    </iframe>
+                  <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ trailer_id }}" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                  </iframe>
                   <a target="_blank" href="{{ imdb_link }}" class="btn btn-primary">Check out IMDb Link</a>
-                </div>                
+                </div>
               </div>
               <div class="col-md-4 parent-poster">
                 <div class="imdbId">{{ review.imdb_id }}</div>
               </div>
               <div class="row">
-                <div class="card-footer text-muted">Genres : {{review.genres}}</div>  
+                <div class="card-footer text-muted">Genres : {{review.genres}}</div>
               </div>
             </div>
+          </div>
+          {% endfor %}
         </div>
-        {% endfor %}
       </div>
     </div>
   </div>
-</div>
-</body>
-{% endblock %}
+  </body>
+  {% endblock %}
