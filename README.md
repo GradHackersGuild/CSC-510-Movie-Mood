@@ -99,9 +99,6 @@ Movie Mood is a personalized movie recommendation platform that curates a list o
 
 ### MovieSphere
 
-#### Personalized Profile Page for Users
-![Profile](./asset/profile.gif)
-
 #### Check Out New and Upcoming Movies
 ![New Movies](./asset/new_movies.gif)
 
@@ -111,13 +108,9 @@ Movie Mood is a personalized movie recommendation platform that curates a list o
 #### Write Movie Reviews
 ![Review](./asset/review.gif)
 
-### User Interaction
 
 #### See What Others Have Seen
 ![Movies](./asset/movies-list.gif)
-
-#### Private Chat Room
-![Chat](./asset/ChatRoom.gif)
 
 ### ❤️Based on preivous project, we added two new UI tabs!❤️
 #### Today's series
